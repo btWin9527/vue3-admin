@@ -56,7 +56,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       include: [
         "vue",
         "vue-router",
-        "vue-types"
+        "vue-types",
+        "axios",
+        "qs",
+        "element-plus/es/locale/lang/zh-cn",
+        "element-plus/es/locale/lang/en"
       ]
     }
   };

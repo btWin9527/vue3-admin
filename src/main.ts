@@ -1,22 +1,27 @@
-import {createApp} from 'vue'
+import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 
 // 引入状态管理
-import {setupStore} from "./store"
+import { setupStore } from './store'
 
 // 路由
-import {setupRouter} from "./router";
+import { setupRouter } from './router'
+
+// 引入element-plus
+import { setupElementPlus } from '@/plugins/elementPlus'
 
 // 创建实例
 const setupAll = async () => {
-    const app = createApp(App)
+  const app = createApp(App)
 
-    setupStore(app)
+  setupStore(app)
 
-    setupRouter(app)
+  setupRouter(app)
 
-    app.mount('#app')
+  setupElementPlus(app)
+
+  app.mount('#app')
 }
 
 setupAll()
