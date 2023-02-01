@@ -1,28 +1,63 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useAppStore } from '@/store/modules/app'
+import { ConfigGlobal } from '@/components/ConfigGlobal'
+import { isDark } from '@/utils/is'
+import { useDesign } from '@/hooks/web/useDesign'
+import { useCache } from '@/hooks/web/useCache'
+
+const { getPrefixCls } = useDesign()
+
+const prefixCls = getPrefixCls('app')
+
+const appStore = useAppStore()
+
+const currentSize = computed(() => appStore.getCurrentSize)
+
+const greyMode = computed(() => appStore.getGreyMode)
+
+const { wsCache } = useCache()
+
+// 根据浏览器当前主题设置系统主题色
+const setDefaultTheme = () => {
+  if (wsCache.get('isDark') !== null) {
+    appStore.setIsDark(wsCache.get('isDark'))
+    return
+  }
+  const isDarkTheme = isDark()
+  appStore.setIsDark(isDarkTheme)
+}
+
+setDefaultTheme()
+</script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
+  <ConfigGlobal :size="currentSize">
+    <RouterView :class="greyMode ? `${prefixCls}-grey-mode` : ''" />
+  </ConfigGlobal>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+<style lang="less">
+@prefix-cls: ~'@{namespace}-app';
+
+.size {
+  width: 100%;
+  height: 100%;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+html,
+body {
+  padding: 0 !important;
+  margin: 0;
+  overflow: hidden;
+  .size;
+
+  #app {
+    .size;
+  }
 }
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.@{prefix-cls}-grey-mode {
+  filter: grayscale(100%);
 }
 </style>
