@@ -1,13 +1,16 @@
+<!-- 密码强度组件封装 -->
 <script setup lang="ts">
-import { ref, unref, computed, watch } from 'vue'
+import { computed, unref, ref, watch } from 'vue'
 import { ElInput } from 'element-plus'
-import { propTypes } from '@/utils/propTypes'
-import { useConfigGlobal } from '@/hooks/web/useConfigGlobal'
-import { zxcvbn } from '@zxcvbn-ts/core'
-import type { ZxcvbnResult } from '@zxcvbn-ts/core'
 import { useDesign } from '@/hooks/web/useDesign'
+import { useConfigGlobal } from '@/hooks/web/useConfigGlobal'
+import { propTypes } from '@/utils/propTypes'
+import type { ZxcvbnResult } from '@zxcvbn-ts/core'
+import { zxcvbn } from '@zxcvbn-ts/core'
 
 const { getPrefixCls } = useDesign()
+
+const { configGlobal } = useConfigGlobal()
 
 const prefixCls = getPrefixCls('input-password')
 
@@ -25,26 +28,12 @@ watch(
   }
 )
 
-const { configGlobal } = useConfigGlobal()
-
 const emit = defineEmits(['update:modelValue'])
 
-// 设置input的type属性
 const textType = ref<'password' | 'text'>('password')
 
-const changeTextType = () => {
-  textType.value = unref(textType) === 'text' ? 'password' : 'text'
-}
-
-// 输入框的值
-const valueRef = ref(props.modelValue)
-
-// 监听
-watch(
-  () => valueRef.value,
-  (val: string) => {
-    emit('update:modelValue', val)
-  }
+const getIconName = computed(() =>
+  unref(textType) === 'password' ? 'ant-design:eye-invisible-outlined' : 'ant-design:eye-outlined'
 )
 
 // 获取密码强度
@@ -54,16 +43,29 @@ const getPasswordStrength = computed(() => {
   return value ? zxcvbnRef.score : -1
 })
 
-const getIconName = computed(() =>
-  unref(textType) === 'password' ? 'ant-design:eye-invisible-outlined' : 'ant-design:eye-outlined'
+/**
+ * 修改密码输入框类型
+ */
+const changeTextType = () => {
+  textType.value = unref(textType) === 'text' ? 'password' : 'text'
+}
+
+// 输入框的值
+const valueRef = ref(props.modelValue)
+// 监听
+watch(
+  () => valueRef.value,
+  (val: string) => {
+    emit('update:modelValue', val)
+  }
 )
 </script>
 
 <template>
-  <div :class="[prefixCls, `${prefixCls}--${configGlobal?.size}`]">
+  <div :class="[prefixCls, `${prefixCls}--${configGlobal.size}`]">
     <ElInput v-bind="$attrs" v-model="valueRef" :type="textType">
       <template #suffix>
-        <Icon class="el-input__icon cursor-pointer" :icon="getIconName" @click="changeTextType" />
+        <Icon class="el0input__icon cursor-pointer" :icon="getIconName" @click="changeTextType" />
       </template>
     </ElInput>
     <div
