@@ -13,8 +13,6 @@ const { required } = useValidator()
 
 const { t } = useI18n()
 
-const dialogVisible = ref(false)
-
 const dialogVisible2 = ref(false)
 
 const schema = reactive<FormSchema[]>([
@@ -122,20 +120,9 @@ const formSubmit = () => {
 
 <template>
   <ContentWrap :title="t('dialogDemo.dialog')" :message="t('dialogDemo.dialogDes')">
-    <ElButton type="primary" @click="dialogVisible = !dialogVisible">
-      {{ t('dialogDemo.open') }}
-    </ElButton>
-
     <ElButton type="primary" @click="dialogVisible2 = !dialogVisible2">
       {{ t('dialogDemo.combineWithForm') }}
     </ElButton>
-
-    <Dialog v-model="dialogVisible" :title="t('dialogDemo.dialog')">
-      <div v-for="v in 10000" :key="v">{{ v }}</div>
-      <template #footer>
-        <ElButton @click="dialogVisible = false">{{ t('dialogDemo.close') }}</ElButton>
-      </template>
-    </Dialog>
 
     <Dialog v-model="dialogVisible2" :title="t('dialogDemo.dialog')">
       <Form ref="formRef" :schema="schema" />
