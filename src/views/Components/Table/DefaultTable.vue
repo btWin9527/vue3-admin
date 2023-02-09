@@ -1,71 +1,73 @@
 <script setup lang="ts">
+// 页面容器
 import { ContentWrap } from '@/components/ContentWrap'
-import { useI18n } from '@/hooks/web/useI18n'
+// 二次封装table组件
 import { Table } from '@/components/Table'
+// 接口api地址
 import { getTableListApi } from '@/api/table'
+// 列表数据type类型
 import { TableData } from '@/api/table/types'
-import { ref, h } from 'vue'
+// h用于render方式创建template
+import { h, ref } from 'vue'
 import { ElTag, ElButton } from 'element-plus'
+// 二次封装表格列字段type类型, 二次封装表格插槽字段类型
 import { TableColumn, TableSlotDefault } from '@/types/table'
+import { localesFn, cellConfigEnum } from '@/views/Components/Table/config'
 
+// 接口参数type
 interface Params {
   pageIndex?: number
   pageSize?: number
 }
 
-const { t } = useI18n()
-
 const columns: TableColumn[] = [
   {
     field: 'index',
-    label: t('tableDemo.index'),
+    label: localesFn('index'),
     type: 'index'
   },
   {
     field: 'title',
-    label: t('tableDemo.title')
+    label: localesFn('title')
   },
   {
     field: 'author',
-    label: t('tableDemo.author')
+    label: localesFn('author')
   },
   {
     field: 'display_time',
-    label: t('tableDemo.displayTime'),
+    label: localesFn('displayTime'),
     sortable: true
   },
   {
     field: 'importance',
-    label: t('tableDemo.importance'),
+    label: localesFn('importance'),
     formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
       return h(
         ElTag,
-        {
-          type: cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'
-        },
-        () =>
-          cellValue === 1
-            ? t('tableDemo.important')
-            : cellValue === 2
-            ? t('tableDemo.good')
-            : t('tableDemo.commonly')
+        { type: cellConfigEnum[cellValue].type },
+        () => cellConfigEnum[cellValue].text
       )
     }
   },
   {
     field: 'pageviews',
-    label: t('tableDemo.pageviews')
+    label: localesFn('pageviews')
   },
   {
     field: 'action',
-    label: t('tableDemo.action')
+    label: localesFn('action')
   }
 ]
 
 const loading = ref(true)
+// 列表数据
+const tableDataList = ref<TableData[]>([])
 
-let tableDataList = ref<TableData[]>([])
-
+/**
+ * @method 获取列表数据
+ * @param params
+ */
 const getTableList = async (params?: Params) => {
   const res = await getTableListApi(
     params || {
@@ -85,12 +87,11 @@ const getTableList = async (params?: Params) => {
 getTableList()
 
 const actionFn = (data: TableSlotDefault) => {
-  console.log(data)
+  console.log(data, '当前行数据')
 }
 </script>
-
 <template>
-  <ContentWrap :title="t('tableDemo.table')" :message="t('tableDemo.tableDes')">
+  <ContentWrap :title="localesFn('title')" :message="localesFn('tableDes')">
     <Table
       :columns="columns"
       :data="tableDataList"
@@ -98,8 +99,8 @@ const actionFn = (data: TableSlotDefault) => {
       :defaultSort="{ prop: 'display_time', order: 'descending' }"
     >
       <template #action="data">
-        <ElButton type="primary" @click="actionFn(data as TableSlotDefault)">
-          {{ t('tableDemo.action') }}
+        <ElButton type="primary" @click="actionFn(data)">
+          {{ localesFn('action') }}
         </ElButton>
       </template>
     </Table>

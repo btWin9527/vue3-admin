@@ -49,17 +49,24 @@ export default defineComponent({
     }
   },
   emits: ['update:pageSize', 'update:currentPage', 'register'],
+  /**
+   * vue setup周期
+   * @param props  组件传递的数据
+   * @param attrs  获取当前组件标签上所有属性的对象
+   * @param slots  插槽
+   * @param emit   分发事件
+   * @param expose 在使用渲染函数或tsx的时候，给父组件暴露方法
+   */
   setup(props, { attrs, slots, emit, expose }) {
+    // 表格组件实例
     const elTableRef = ref<ComponentRef<typeof ElTable>>()
 
-    // 注册
     onMounted(() => {
       const tableRef = unref(elTableRef)
       emit('register', tableRef?.$parent, elTableRef)
     })
 
     const pageSizeRef = ref(props.pageSize)
-
     const currentPageRef = ref(props.currentPage)
 
     // useTable传入的props
