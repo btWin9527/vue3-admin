@@ -102,6 +102,8 @@ export default {
     codePlaceholder: '请输入验证码'
   },
   router: {
+    windiPage: 'Windi样式',
+    vueStudy: 'vue学习',
     login: '登录',
     level: '多级菜单',
     menu: '菜单',

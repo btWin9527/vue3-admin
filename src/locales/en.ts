@@ -102,6 +102,8 @@ export default {
     codePlaceholder: 'Please input verification code'
   },
   router: {
+    windiPage: 'WindiPage',
+    vueStudy: 'VueStudy',
     login: 'Login',
     level: 'Multi level menu',
     menu: 'Menu',

@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { Layout, getParentLayout } from '@/utils/routerHelper'
 import { useI18n } from '@/hooks/web/useI18n'
+import { vueStudyRoutes } from '@/router/modules/vueStudy'
 
 const { t } = useI18n()
 
@@ -56,6 +57,7 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
 ]
 
 export const asyncRouterMap: AppRouteRecordRaw[] = [
+  vueStudyRoutes,
   {
     path: '/dashboard',
     component: Layout,
