@@ -16,7 +16,8 @@
     "lint:eslint": "eslint --fix --ext .js,.ts,.vue ./src",
     "lint:format": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,less,vue,html,md}\"",
     "lint:style": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
-    "analysis": "windicss-analysis"
+    "analysis": "windicss-analysis",
+    "p": "plop"
   },
   "dependencies": {
     "@iconify/iconify": "^3.0.1",
@@ -46,6 +47,7 @@
     "web-storage-cache": "^1.1.1"
   },
   "devDependencies": {
+    "plop": "^4.0.0",
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@iconify/json": "^2.2.7",
