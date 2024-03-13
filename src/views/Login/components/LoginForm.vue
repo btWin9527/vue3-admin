@@ -79,14 +79,14 @@ const schema = reactive<FormSchema[]>([
       span: 24
     }
   },
-  {
-    field: 'other',
-    component: 'Divider',
-    label: t('login.otherLogin'),
-    componentProps: {
-      contentPosition: 'center'
-    }
-  },
+  // {
+  //   field: 'other',
+  //   component: 'Divider',
+  //   label: t('login.otherLogin'),
+  //   componentProps: {
+  //     contentPosition: 'center'
+  //   }
+  // },
   {
     field: 'otherIcon',
     colProps: {
@@ -201,7 +201,6 @@ const toRegister = () => {
     <template #tool>
       <div class="flex justify-between items-center w-[100%]">
         <ElCheckbox v-model="remember" :label="t('login.remember')" size="small" />
-        <ElLink type="primary" :underline="false">{{ t('login.forgetPassword') }}</ElLink>
       </div>
     </template>
 
@@ -210,40 +209,6 @@ const toRegister = () => {
         <ElButton :loading="loading" type="primary" class="w-[100%]" @click="signIn">
           {{ t('login.login') }}
         </ElButton>
-      </div>
-      <div class="w-[100%] mt-15px">
-        <ElButton class="w-[100%]" @click="toRegister">
-          {{ t('login.register') }}
-        </ElButton>
-      </div>
-    </template>
-
-    <template #otherIcon>
-      <div class="flex justify-between w-[100%]">
-        <Icon
-          icon="ant-design:github-filled"
-          :size="iconSize"
-          class="cursor-pointer anticon"
-          :color="iconColor"
-        />
-        <Icon
-          icon="ant-design:wechat-filled"
-          :size="iconSize"
-          class="cursor-pointer anticon"
-          :color="iconColor"
-        />
-        <Icon
-          icon="ant-design:alipay-circle-filled"
-          :size="iconSize"
-          :color="iconColor"
-          class="cursor-pointer anticon"
-        />
-        <Icon
-          icon="ant-design:weibo-circle-filled"
-          :size="iconSize"
-          :color="iconColor"
-          class="cursor-pointer anticon"
-        />
       </div>
     </template>
   </Form>

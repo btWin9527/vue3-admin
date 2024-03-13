@@ -75,11 +75,6 @@ const toLogin = () => {
               class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)"
               @to-register="toRegister"
             />
-            <RegisterForm
-              v-else
-              class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)"
-              @to-login="toLogin"
-            />
           </div>
         </Transition>
       </div>
