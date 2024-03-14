@@ -22,6 +22,7 @@ defineExpose({
   getBase64
 })
 </script>
+
 <template>
   <div>
     <ImageCropping ref="CropperRef" :image-url="fileUrl || url" />

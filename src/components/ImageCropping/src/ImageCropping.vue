@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { nextTick, unref, ref, watch, onBeforeUnmount, onMounted, computed } from 'vue'
 import { useDesign } from '@/hooks/web/useDesign'
-import { ElDivider, ElUpload, UploadFile, ElMessage, ElTooltip } from 'element-plus'
+import { nextTick, unref, ref, watch, onBeforeUnmount, onMounted, computed } from 'vue'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
+import { ElDivider, ElUpload, UploadFile, ElMessage, ElTooltip } from 'element-plus'
 import { useDebounceFn } from '@vueuse/core'
 import { BaseButton } from '@/components/Button'
 
 const { getPrefixCls } = useDesign()
+
 const prefixCls = getPrefixCls('image-cropping')
 
 const props = defineProps({
@@ -69,7 +70,7 @@ const getScaleSize = (scale: number) => {
 }
 
 const uploadChange = (uploadFile: UploadFile) => {
-  // 判断是否位图片
+  // 判断是否是图片
   if (uploadFile?.raw?.type.indexOf('image') === -1) {
     ElMessage.error('请上传图片格式的文件')
     return
@@ -136,13 +137,13 @@ const intiCropper = () => {
 
 const resetCropBox = () => {
   const containerData = unref(cropperRef)?.getContainerData()
-  unref(cropperRef)?.setContainerData({
+  unref(cropperRef)?.setCropBoxData({
     width: props.cropBoxWidth,
     height: props.cropBoxHeight,
     left: (containerData?.width || 0) / 2 - 100,
     top: (containerData?.height || 0) / 2 - 100
   })
-  imgBase64.value = unref(cropperRef)?.getCropBoxData()?.toDataURL() ?? ''
+  imgBase64.value = unref(cropperRef)?.getCroppedCanvas()?.toDataURL() ?? ''
 }
 
 onMounted(() => {
@@ -167,89 +168,90 @@ defineExpose({
 })
 </script>
 <template>
-  <div>
-    <div
-      :style="getBoxStyle"
-      :class="{
-        [prefixCls]: true,
-        'flex items-center': showResult
-      }"
-    >
-      <img
-        :src="imageUrl"
-        ref="imgRef"
-        alt=""
-        class="block max-w-full"
-        crossorigin="anonymous"
-        srcset=""
-      />
-    </div>
-    <div v-if="showActions" class="mt-10px flex item-center">
-      <div class="flex items-center">
-        <ElTooltip content="选择文件" placement="bottom">
-          <ElUpload
-            action="''"
-            accept="image/*"
-            :auto-upload="false"
-            :show-file-list="false"
-            :on-success="uploadChange"
-          >
-            <BaseButton size="small" type="primary" class="mt-2px">
-              <Icon icon="ep:upload-filled" />
+  <div
+    :class="{
+      [prefixCls]: true,
+      'flex items-center': showResult
+    }"
+  >
+    <div>
+      <div :style="getBoxStyle" class="flex justify-center items-center">
+        <img
+          v-show="imageUrl"
+          ref="imgRef"
+          :src="imageUrl"
+          class="block max-w-full"
+          crossorigin="anonymous"
+          alt=""
+          srcset=""
+        />
+      </div>
+      <div v-if="showActions" class="mt-10px flex items-center">
+        <div class="flex items-center">
+          <ElTooltip content="选择文件" placement="bottom">
+            <ElUpload
+              action="''"
+              accept="image/*"
+              :auto-upload="false"
+              :show-file-list="false"
+              :on-change="uploadChange"
+            >
+              <BaseButton size="small" type="primary" class="mt-2px">
+                <Icon icon="ep:upload-filled" />
+              </BaseButton>
+            </ElUpload>
+          </ElTooltip>
+        </div>
+        <div class="flex items-center justify-end flex-1">
+          <ElTooltip content="重置" placement="bottom">
+            <BaseButton size="small" type="primary" @click="reset">
+              <Icon icon="ep:refresh" />
             </BaseButton>
-          </ElUpload>
-        </ElTooltip>
-      </div>
-      <div class="flex items-center justify-end flex-1">
-        <ElTooltip content="重置" placement="bottom">
-          <BaseButton size="small" type="primary" @click="reset">
-            <Icon icon="ep:refresh" />
-          </BaseButton>
-        </ElTooltip>
-        <ElTooltip content="逆时针旋转" placement="bottom">
-          <BaseButton size="small" type="primary" @click="rotate(-45)">
-            <Icon icon="ant-design:rotate-left-outlined" />
-          </BaseButton>
-        </ElTooltip>
-        <ElTooltip content="顺时针旋转" placement="bottom">
-          <BaseButton size="small" type="primary" @click="rotate(45)">
-            <Icon icon="ant-design:rotate-right-outlined" />
-          </BaseButton>
-        </ElTooltip>
-        <ElTooltip content="水平翻转" placement="bottom">
-          <BaseButton size="small" type="primary" @click="scale('scaleX')">
-            <Icon icon="vaadin:arrows-long-h" />
-          </BaseButton>
-        </ElTooltip>
-        <ElTooltip content="垂直翻转" placement="bottom">
-          <BaseButton size="small" type="primary" @click="scale('scaleY')">
-            <Icon icon="vaadin:arrows-long-v" />
-          </BaseButton>
-        </ElTooltip>
-        <ElTooltip content="放大" placement="bottom">
-          <BaseButton size="small" type="primary" @click="zoom(0.1)">
-            <Icon icon="ant-design:zoom-in-outlined" />
-          </BaseButton>
-        </ElTooltip>
-        <ElTooltip content="缩小" placement="bottom">
-          <BaseButton size="small" type="primary" @click="zoom(-0.1)">
-            <Icon icon="ant-design:zoom-out-outlined" />
-          </BaseButton>
-        </ElTooltip>
+          </ElTooltip>
+          <ElTooltip content="逆时针旋转" placement="bottom">
+            <BaseButton size="small" type="primary" @click="rotate(-45)">
+              <Icon icon="ant-design:rotate-left-outlined" />
+            </BaseButton>
+          </ElTooltip>
+          <ElTooltip content="顺时针旋转" placement="bottom">
+            <BaseButton size="small" type="primary" @click="rotate(45)">
+              <Icon icon="ant-design:rotate-right-outlined" />
+            </BaseButton>
+          </ElTooltip>
+          <ElTooltip content="水平翻转" placement="bottom">
+            <BaseButton size="small" type="primary" @click="scale('scaleX')">
+              <Icon icon="vaadin:arrows-long-h" />
+            </BaseButton>
+          </ElTooltip>
+          <ElTooltip content="垂直翻转" placement="bottom">
+            <BaseButton size="small" type="primary" @click="scale('scaleY')">
+              <Icon icon="vaadin:arrows-long-v" />
+            </BaseButton>
+          </ElTooltip>
+          <ElTooltip content="放大" placement="bottom">
+            <BaseButton size="small" type="primary" @click="zoom(0.1)">
+              <Icon icon="ant-design:zoom-in-outlined" />
+            </BaseButton>
+          </ElTooltip>
+          <ElTooltip content="缩小" placement="bottom">
+            <BaseButton size="small" type="primary" @click="zoom(-0.1)">
+              <Icon icon="ant-design:zoom-out-outlined" />
+            </BaseButton>
+          </ElTooltip>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-if="imgBase64 && showResult" class="ml-20px">
-    <div class="flex justify-center items-center">
-      <img :src="imgBase64" class="rounded-[50%]" :style="getCropBoxStyle" />
-    </div>
-    <ElDivider />
-    <div class="flex justify-center items-center">
-      <img :src="imgBase64" class="rounded-[50%]" :style="getScaleSize(0.2)" />
-      <img :src="imgBase64" class="rounded-[50%] ml-20px" :style="getScaleSize(0.25)" />
-      <img :src="imgBase64" class="rounded-[50%] ml-20px" :style="getScaleSize(0.3)" />
-      <img :src="imgBase64" class="rounded-[50%] ml-20px" :style="getScaleSize(0.35)" />
+    <div v-if="imgBase64 && showResult" class="ml-20px">
+      <div class="flex justify-center items-center">
+        <img :src="imgBase64" class="rounded-[50%]" :style="getCropBoxStyle" />
+      </div>
+      <ElDivider />
+      <div class="flex justify-center items-center">
+        <img :src="imgBase64" class="rounded-[50%]" :style="getScaleSize(0.2)" />
+        <img :src="imgBase64" class="rounded-[50%] ml-20px" :style="getScaleSize(0.25)" />
+        <img :src="imgBase64" class="rounded-[50%] ml-20px" :style="getScaleSize(0.3)" />
+        <img :src="imgBase64" class="rounded-[50%] ml-20px" :style="getScaleSize(0.35)" />
+      </div>
     </div>
   </div>
 </template>
-<style scoped></style>
