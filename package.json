@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@iconify/iconify": "^3.0.1",
-    "@vueuse/core": "^9.10.0",
+    "@vueuse/core": "^10.9.0",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.10",
     "@zxcvbn-ts/core": "^2.1.0",
@@ -44,7 +44,9 @@
     "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.1.6",
     "vue-types": "^5.0.2",
-    "web-storage-cache": "^1.1.1"
+    "web-storage-cache": "^1.1.1",
+    "cropperjs": "^1.6.1"
+
   },
   "devDependencies": {
     "plop": "^4.0.0",

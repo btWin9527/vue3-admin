@@ -2,6 +2,40 @@ import Form from './src/Form.vue'
 import { ElForm } from 'element-plus'
 import { FormSchema, FormSetPropsType } from '@/types/form'
 
+export type {
+  ComponentNameEnum,
+  ComponentName,
+  InputComponentProps,
+  AutocompleteComponentProps,
+  InputNumberComponentProps,
+  SelectOption,
+  SelectComponentProps,
+  SelectV2ComponentProps,
+  CascaderComponentProps,
+  SwitchComponentProps,
+  RateComponentProps,
+  ColorPickerComponentProps,
+  TransferComponentProps,
+  RadioOption,
+  RadioGroupComponentProps,
+  RadioButtonComponentProps,
+  CheckboxOption,
+  CheckboxGroupComponentProps,
+  DividerComponentProps,
+  DatePickerComponentProps,
+  DateTimePickerComponentProps,
+  TimePickerComponentProps,
+  TimeSelectComponentProps,
+  ColProps,
+  FormSetProps,
+  FormItemProps,
+  FormSchema,
+  FormProps,
+  PlaceholderModel,
+  InputPasswordComponentProps,
+  TreeSelectComponentProps
+} from './src/types'
+
 export interface FormExpose {
   // 表单赋值操作
   setValues: (data: Recordable) => void

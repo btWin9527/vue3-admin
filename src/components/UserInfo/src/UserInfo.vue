@@ -18,7 +18,7 @@ const { t } = useI18n()
 
 const { wsCache } = useCache()
 
-const { replace } = useRouter()
+const { replace, push } = useRouter()
 
 const loginOut = () => {
   ElMessageBox.confirm(t('common.loginOutMessage'), t('common.reminder'), {
@@ -41,6 +41,10 @@ const loginOut = () => {
 const toDocument = () => {
   window.open('https://element-plus-admin-doc.cn/')
 }
+
+const toPage = (path: string) => {
+  push(path)
+}
 </script>
 
 <template>
@@ -55,6 +59,11 @@ const toDocument = () => {
     </div>
     <template #dropdown>
       <ElDropdownMenu>
+        <ElDropdownItem>
+          <div @click="toPage('/personal/personal-center')">
+            {{ t('router.personalCenter') }}
+          </div>
+        </ElDropdownItem>
         <ElDropdownItem>
           <div @click="toDocument">{{ t('common.document') }}</div>
         </ElDropdownItem>
