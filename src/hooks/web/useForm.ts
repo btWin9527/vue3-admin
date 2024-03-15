@@ -82,6 +82,38 @@ export const useForm = (props?: FormProps) => {
     getFormData: async <T = Recordable>(): Promise<T> => {
       const form = await getForm()
       return form?.formModel as T
+    },
+    /**
+     * @description 获取表单组件的实例
+     * @param field 表单项唯一标识
+     * @returns component instance
+     */
+    getComponentExpose: async (field: string) => {
+      const form = await getForm()
+      return form?.getComponentExpose(field)
+    },
+
+    /**
+     * @description 获取formItem组件的实例
+     * @param field 表单项唯一标识
+     * @returns formItem instance
+     */
+    getFormItemExpose: async (field: string) => {
+      const form = await getForm()
+      return form?.getFormItemExpose(field) as ComponentRef<typeof ElFormItem>
+    },
+    /**
+     * @description 获取ElForm组件的实例
+     * @returns ElForm instance
+     */
+    getElFormExpose: async () => {
+      await getForm()
+      return unref(elFormRef)
+    },
+
+    getFormExpose: async () => {
+      await getForm()
+      return unref(formRef)
     }
   }
 

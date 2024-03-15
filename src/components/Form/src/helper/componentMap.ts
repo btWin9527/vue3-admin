@@ -16,15 +16,21 @@ import {
   ElTimeSelect,
   ElTransfer,
   ElAutocomplete,
-  ElDivider
+  ElDivider,
+  ElTreeSelect,
+  ElUpload
 } from 'element-plus'
 import { InputPassword } from '@/components/InputPassword'
 import { Editor } from '@/components/Editor'
-import { ComponentName } from '@/types/components'
+import { JsonEditor } from '@/components/JsonEditor'
+import { IconPicker } from '@/components/IconPicker'
+import { IAgree } from '@/components/IAgree'
+import { ComponentName } from '../types'
 
 const componentMap: Recordable<Component, ComponentName> = {
-  Radio: ElRadioGroup,
-  Checkbox: ElCheckboxGroup,
+  RadioGroup: ElRadioGroup,
+  RadioButton: ElRadioGroup,
+  CheckboxGroup: ElCheckboxGroup,
   CheckboxButton: ElCheckboxGroup,
   Input: ElInput,
   Autocomplete: ElAutocomplete,
@@ -41,9 +47,13 @@ const componentMap: Recordable<Component, ComponentName> = {
   Divider: ElDivider,
   TimeSelect: ElTimeSelect,
   SelectV2: ElSelectV2,
-  RadioButton: ElRadioGroup,
   InputPassword: InputPassword,
-  Editor: Editor
+  Editor: Editor,
+  TreeSelect: ElTreeSelect,
+  Upload: ElUpload,
+  JsonEditor: JsonEditor,
+  IconPicker: IconPicker,
+  IAgree: IAgree
 }
 
 export { componentMap }
