@@ -366,6 +366,14 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     },
     children: [
       {
+        path: 'useClipboard',
+        component: () => import('@/views/hooks/useClipboard.vue'),
+        name: 'UseClipboard',
+        meta: {
+          title: 'useClipboard'
+        }
+      },
+      {
         path: 'useWatermark',
         component: () => import('@/views/hooks/useWatermark.vue'),
         name: 'UseWatermark',
