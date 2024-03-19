@@ -4,6 +4,7 @@ import type { App } from 'vue'
 import { Layout, getParentLayout } from '@/utils/routerHelper'
 import { useI18n } from '@/hooks/web/useI18n'
 import { vueStudyRoutes } from '@/router/modules/vueStudy'
+import { useHooksRouter } from '@/router/modules/hooks'
 
 const { t } = useI18n()
 
@@ -81,6 +82,7 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
 
 export const asyncRouterMap: AppRouteRecordRaw[] = [
   vueStudyRoutes,
+  useHooksRouter,
   {
     path: '/dashboard',
     component: Layout,
@@ -354,43 +356,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: '/hooks',
-    component: Layout,
-    redirect: '/hooks/useWatermark',
-    name: 'Hooks',
-    meta: {
-      title: 'hooks',
-      icon: 'ic:outline-webhook',
-      alwaysShow: true
-    },
-    children: [
-      {
-        path: 'useClipboard',
-        component: () => import('@/views/hooks/useClipboard.vue'),
-        name: 'UseClipboard',
-        meta: {
-          title: 'useClipboard'
-        }
-      },
-      {
-        path: 'useWatermark',
-        component: () => import('@/views/hooks/useWatermark.vue'),
-        name: 'UseWatermark',
-        meta: {
-          title: 'useWatermark'
-        }
-      },
-      {
-        path: 'useCrudSchemas',
-        component: () => import('@/views/hooks/useCrudSchemas.vue'),
-        name: 'UseCrudSchemas',
-        meta: {
-          title: 'useCrudSchemas'
-        }
-      }
-    ]
-  },
+
   {
     path: '/level',
     component: Layout,
