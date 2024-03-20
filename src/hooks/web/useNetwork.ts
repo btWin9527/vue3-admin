@@ -3,17 +3,18 @@ import { ref, onBeforeUnmount } from 'vue'
 const useNetwork = () => {
   const online = ref(true)
 
-  const updateNetWork = () => {
+  const updateNetwork = () => {
     online.value = navigator.onLine
   }
 
-  window.addEventListener('online', updateNetWork)
-  window.addEventListener('offline', updateNetWork)
+  window.addEventListener('online', updateNetwork)
+  window.addEventListener('offline', updateNetwork)
 
   onBeforeUnmount(() => {
-    window.removeEventListener('online', updateNetWork)
-    window.removeEventListener('offline', updateNetWork)
+    window.removeEventListener('online', updateNetwork)
+    window.removeEventListener('offline', updateNetwork)
   })
+
   return { online }
 }
 

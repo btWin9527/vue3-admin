@@ -43,9 +43,20 @@ const props = defineProps({
   }
 })
 
-const imgBase64 = ref('')
-const cropperRef = ref<Cropper>()
-const imgRef = ref<HTMLImageElement>()
+const getBase64 = useDebounceFn(() => {
+  imgBase64.value = unref(cropperRef)?.getCroppedCanvas()?.toDataURL() ?? ''
+}, 80)
+
+const resetCropBox = () => {
+  const containerData = unref(cropperRef)?.getContainerData()
+  unref(cropperRef)?.setCropBoxData({
+    width: props.cropBoxWidth,
+    height: props.cropBoxHeight,
+    left: (containerData?.width || 0) / 2 - 100,
+    top: (containerData?.height || 0) / 2 - 100
+  })
+  imgBase64.value = unref(cropperRef)?.getCroppedCanvas()?.toDataURL() ?? ''
+}
 
 const getBoxStyle = computed(() => {
   return {
@@ -67,6 +78,35 @@ const getScaleSize = (scale: number) => {
     width: props.cropBoxWidth * scale + 'px',
     height: props.cropBoxHeight * scale + 'px'
   }
+}
+
+const imgBase64 = ref('')
+const imgRef = ref<HTMLImageElement>()
+const cropperRef = ref<Cropper>()
+const intiCropper = () => {
+  if (!unref(imgRef)) return
+  const imgEl = unref(imgRef)!
+  cropperRef.value = new Cropper(imgEl, {
+    aspectRatio: 1,
+    viewMode: 1,
+    dragMode: 'move',
+    // cropBoxResizable: false,
+    // cropBoxMovable: false,
+    toggleDragModeOnDblclick: false,
+    checkCrossOrigin: false,
+    ready() {
+      resetCropBox()
+    },
+    cropmove() {
+      getBase64()
+    },
+    zoom() {
+      getBase64()
+    },
+    crop() {
+      getBase64()
+    }
+  })
 }
 
 const uploadChange = (uploadFile: UploadFile) => {
@@ -105,68 +145,30 @@ const zoom = (num: number) => {
   unref(cropperRef)?.zoom(num)
 }
 
-const getBase64 = useDebounceFn(() => {
-  imgBase64.value = unref(cropperRef)?.getCroppedCanvas()?.toDataURL() ?? ''
-}, 80)
-
-const intiCropper = () => {
-  if (!unref(imgRef)) return
-  const imgEl = unref(imgRef)!
-  cropperRef.value = new Cropper(imgEl, {
-    aspectRatio: 1,
-    viewMode: 1,
-    dragMode: 'move',
-    // cropBoxResizable: false,
-    // cropBoxMovable: false,
-    toggleDragModeOnDblclick: false,
-    checkCrossOrigin: false,
-    ready() {
-      resetCropBox()
-    },
-    cropmove() {
-      getBase64()
-    },
-    zoom() {
-      getBase64()
-    },
-    crop() {
-      getBase64()
-    }
-  })
-}
-
-const resetCropBox = () => {
-  const containerData = unref(cropperRef)?.getContainerData()
-  unref(cropperRef)?.setCropBoxData({
-    width: props.cropBoxWidth,
-    height: props.cropBoxHeight,
-    left: (containerData?.width || 0) / 2 - 100,
-    top: (containerData?.height || 0) / 2 - 100
-  })
-  imgBase64.value = unref(cropperRef)?.getCroppedCanvas()?.toDataURL() ?? ''
-}
-
 onMounted(() => {
   intiCropper()
-})
-
-onBeforeUnmount(() => {
-  unref(cropperRef)?.destroy()
 })
 
 watch(
   () => props.imageUrl,
   async (url) => {
-    unref(cropperRef)?.replace(url)
-    await nextTick()
-    resetCropBox()
+    if (url) {
+      unref(cropperRef)?.replace(url)
+      await nextTick()
+      resetCropBox()
+    }
   }
 )
+
+onBeforeUnmount(() => {
+  unref(cropperRef)?.destroy()
+})
 
 defineExpose({
   cropperExpose: cropperRef
 })
 </script>
+
 <template>
   <div
     :class="{
@@ -196,47 +198,47 @@ defineExpose({
               :show-file-list="false"
               :on-change="uploadChange"
             >
-              <BaseButton size="small" type="primary" class="mt-2px">
-                <Icon icon="ep:upload-filled" />
-              </BaseButton>
+              <BaseButton size="small" type="primary" class="mt-2px"
+                ><Icon icon="ep:upload-filled"
+              /></BaseButton>
             </ElUpload>
           </ElTooltip>
         </div>
         <div class="flex items-center justify-end flex-1">
           <ElTooltip content="重置" placement="bottom">
-            <BaseButton size="small" type="primary" @click="reset">
-              <Icon icon="ep:refresh" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="reset"
+              ><Icon icon="ep:refresh"
+            /></BaseButton>
           </ElTooltip>
           <ElTooltip content="逆时针旋转" placement="bottom">
-            <BaseButton size="small" type="primary" @click="rotate(-45)">
-              <Icon icon="ant-design:rotate-left-outlined" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="rotate(-45)"
+              ><Icon icon="ant-design:rotate-left-outlined"
+            /></BaseButton>
           </ElTooltip>
           <ElTooltip content="顺时针旋转" placement="bottom">
-            <BaseButton size="small" type="primary" @click="rotate(45)">
-              <Icon icon="ant-design:rotate-right-outlined" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="rotate(45)"
+              ><Icon icon="ant-design:rotate-right-outlined"
+            /></BaseButton>
           </ElTooltip>
           <ElTooltip content="水平翻转" placement="bottom">
-            <BaseButton size="small" type="primary" @click="scale('scaleX')">
-              <Icon icon="vaadin:arrows-long-h" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="scale('scaleX')"
+              ><Icon icon="vaadin:arrows-long-h"
+            /></BaseButton>
           </ElTooltip>
           <ElTooltip content="垂直翻转" placement="bottom">
-            <BaseButton size="small" type="primary" @click="scale('scaleY')">
-              <Icon icon="vaadin:arrows-long-v" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="scale('scaleY')"
+              ><Icon icon="vaadin:arrows-long-v"
+            /></BaseButton>
           </ElTooltip>
           <ElTooltip content="放大" placement="bottom">
-            <BaseButton size="small" type="primary" @click="zoom(0.1)">
-              <Icon icon="ant-design:zoom-in-outlined" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="zoom(0.1)"
+              ><Icon icon="ant-design:zoom-in-outlined"
+            /></BaseButton>
           </ElTooltip>
           <ElTooltip content="缩小" placement="bottom">
-            <BaseButton size="small" type="primary" @click="zoom(-0.1)">
-              <Icon icon="ant-design:zoom-out-outlined" />
-            </BaseButton>
+            <BaseButton size="small" type="primary" @click="zoom(-0.1)"
+              ><Icon icon="ant-design:zoom-out-outlined"
+            /></BaseButton>
           </ElTooltip>
         </div>
       </div>

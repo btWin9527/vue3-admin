@@ -62,9 +62,6 @@ const toPage = (path: string) => {
             {{ t('router.personalCenter') }}
           </div>
         </ElDropdownItem>
-        <ElDropdownItem>
-          <div @click="toDocument">{{ t('common.document') }}</div>
-        </ElDropdownItem>
         <ElDropdownItem divided>
           <div @click="lockScreen">{{ t('lock.lockScreen') }}</div>
         </ElDropdownItem>
@@ -86,7 +83,9 @@ const toPage = (path: string) => {
 <style scoped lang="less">
 .fade-bottom-enter-active,
 .fade-bottom-leave-active {
-  transition: opacity 0.25s, transform 0.3s;
+  transition:
+    opacity 0.25s,
+    transform 0.3s;
 }
 
 .fade-bottom-enter-from {

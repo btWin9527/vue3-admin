@@ -8,8 +8,9 @@ const { copy, copied, text, isSupported } = useClipboard()
 
 const source = ref('')
 </script>
+
 <template>
-  <ContentWrap>
+  <ContentWrap title="useClipboard">
     <ElInput v-model="source" placeholder="请输入要复制的内容" />
     <div v-if="isSupported">
       <BaseButton @click="copy(source)" type="primary" class="mt-20px">
@@ -20,6 +21,6 @@ const source = ref('')
         当前已复制: <code>{{ text || 'none' }}</code>
       </p>
     </div>
-    <p v-else>你的浏览器不支持Clipboard API</p>
+    <p v-else> 你的浏览器不支持 Clipboard API </p>
   </ContentWrap>
 </template>

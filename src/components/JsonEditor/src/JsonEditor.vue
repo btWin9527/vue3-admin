@@ -40,9 +40,13 @@ const props = defineProps({
 })
 
 const data = computed(() => props.modelValue)
+
 const localModelValue = computed({
   get: () => data.value,
-  set: (val) => emits('update:modelValue', val)
+  set: (val) => {
+    console.log(val)
+    emits('update:modelValue', val)
+  }
 })
 
 const nodeClick = (node: any) => {
@@ -62,6 +66,7 @@ const selectedChange = (newVal: any, oldVal: any) => {
   emits('selected-value', newVal, oldVal)
 }
 </script>
+
 <template>
   <VueJsonPretty
     v-model:data="localModelValue"

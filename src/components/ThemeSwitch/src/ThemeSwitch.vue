@@ -7,6 +7,8 @@ import { useDesign } from '@/hooks/web/useDesign'
 
 const { getPrefixCls } = useDesign()
 
+const emit = defineEmits(['change'])
+
 const prefixCls = getPrefixCls('theme-switch')
 
 const Sun = useIcon({ icon: 'emojione-monotone:sun', color: '#fde047' })
@@ -23,6 +25,7 @@ const blackColor = 'var(--el-color-black)'
 
 const themeChange = (val: boolean) => {
   appStore.setIsDark(val)
+  emit('change', val)
 }
 </script>
 
@@ -39,3 +42,9 @@ const themeChange = (val: boolean) => {
     @change="themeChange"
   />
 </template>
+
+<style lang="less" scoped>
+:deep(.el-switch__core .el-switch__inner .is-icon) {
+  overflow: visible;
+}
+</style>

@@ -123,8 +123,6 @@ export default {
     getCode: '获取验证码'
   },
   router: {
-    windiPage: 'windi学习',
-    vueStudy: 'vue学习',
     login: '登录',
     level: '多级菜单',
     menu: '菜单',

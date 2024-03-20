@@ -16,18 +16,21 @@ watch(
   (val) => {
     console.log(val)
   },
-  { deep: true }
+  {
+    deep: true
+  }
 )
 
 setTimeout(() => {
   defaultData.value = {
-    title: '异步标题2',
-    content: '异步内容2'
+    title: '异步标题',
+    content: '异步内容'
   }
-}, 2000)
+}, 4000)
 </script>
+
 <template>
-  <ContentWrap :title="t('richText.jsonEditor')" :message="t('richeText.jsonEditor')">
+  <ContentWrap :title="t('richText.jsonEditor')" :message="t('richText.jsonEditorDes')">
     <JsonEditor v-model="defaultData" />
   </ContentWrap>
 </template>

@@ -72,8 +72,9 @@ const rules = reactive<{
   ]
 })
 </script>
+
 <template>
-  <ContentWrap>
+  <ContentWrap title="useValidator">
     <Form :schema="formSchema" :rules="rules" @register="formRegister" />
   </ContentWrap>
 </template>

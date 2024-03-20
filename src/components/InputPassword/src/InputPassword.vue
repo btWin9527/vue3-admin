@@ -1,16 +1,13 @@
-<!-- 密码强度组件封装 -->
 <script setup lang="ts">
-import { computed, unref, ref, watch } from 'vue'
+import { ref, unref, computed, watch } from 'vue'
 import { ElInput } from 'element-plus'
-import { useDesign } from '@/hooks/web/useDesign'
-import { useConfigGlobal } from '@/hooks/web/useConfigGlobal'
 import { propTypes } from '@/utils/propTypes'
-import type { ZxcvbnResult } from '@zxcvbn-ts/core'
+import { useConfigGlobal } from '@/hooks/web/useConfigGlobal'
 import { zxcvbn } from '@zxcvbn-ts/core'
+import type { ZxcvbnResult } from '@zxcvbn-ts/core'
+import { useDesign } from '@/hooks/web/useDesign'
 
 const { getPrefixCls } = useDesign()
-
-const { configGlobal } = useConfigGlobal()
 
 const prefixCls = getPrefixCls('input-password')
 
@@ -28,12 +25,22 @@ watch(
   }
 )
 
+const { configGlobal } = useConfigGlobal()
+
 const emit = defineEmits(['update:modelValue'])
 
+// 设置input的type属性
 const textType = ref<'password' | 'text'>('password')
 
-const getIconName = computed(() =>
-  unref(textType) === 'password' ? 'ant-design:eye-invisible-outlined' : 'ant-design:eye-outlined'
+// 输入框的值
+const valueRef = ref(props.modelValue)
+
+// 监听
+watch(
+  () => valueRef.value,
+  (val: string) => {
+    emit('update:modelValue', val)
+  }
 )
 
 // 获取密码强度
@@ -42,32 +49,11 @@ const getPasswordStrength = computed(() => {
   const zxcvbnRef = zxcvbn(unref(valueRef)) as ZxcvbnResult
   return value ? zxcvbnRef.score : -1
 })
-
-/**
- * 修改密码输入框类型
- */
-const changeTextType = () => {
-  textType.value = unref(textType) === 'text' ? 'password' : 'text'
-}
-
-// 输入框的值
-const valueRef = ref(props.modelValue)
-// 监听
-watch(
-  () => valueRef.value,
-  (val: string) => {
-    emit('update:modelValue', val)
-  }
-)
 </script>
 
 <template>
-  <div :class="[prefixCls, `${prefixCls}--${configGlobal.size}`]">
-    <ElInput v-bind="$attrs" v-model="valueRef" :type="textType">
-      <template #suffix>
-        <Icon class="el0input__icon cursor-pointer" :icon="getIconName" @click="changeTextType" />
-      </template>
-    </ElInput>
+  <div :class="[prefixCls, `${prefixCls}--${configGlobal?.size}`]">
+    <ElInput v-bind="$attrs" v-model="valueRef" showPassword :type="textType" />
     <div
       v-if="strength"
       :class="`${prefixCls}__bar`"
@@ -100,7 +86,7 @@ watch(
       background-color: transparent;
       border-color: var(--el-color-white);
       border-style: solid;
-      border-width: 0 5px 0 5px;
+      border-width: 0 5px;
       content: '';
     }
 
@@ -118,7 +104,9 @@ watch(
       height: inherit;
       background-color: transparent;
       border-radius: inherit;
-      transition: width 0.5s ease-in-out, background 0.25s;
+      transition:
+        width 0.5s ease-in-out,
+        background 0.25s;
 
       &[data-score='0'] {
         width: 20%;

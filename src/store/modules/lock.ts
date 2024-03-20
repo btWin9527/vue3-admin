@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { store } from '@/store'
+import { store } from '../index'
 
 interface lockInfo {
   isLock?: boolean

@@ -1,73 +1,75 @@
-<script setup lang="ts">
-// 页面容器
+<script setup lang="tsx">
 import { ContentWrap } from '@/components/ContentWrap'
-// 二次封装table组件
-import { Table } from '@/components/Table'
-// 接口api地址
+import { useI18n } from '@/hooks/web/useI18n'
+import { Table, TableColumn } from '@/components/Table'
 import { getTableListApi } from '@/api/table'
-// 列表数据type类型
 import { TableData } from '@/api/table/types'
-// h用于render方式创建template
-import { h, ref } from 'vue'
-import { ElTag, ElButton } from 'element-plus'
-// 二次封装表格列字段type类型, 二次封装表格插槽字段类型
-import { TableColumn, TableSlotDefault } from '@/types/table'
-import { localesFn, cellConfigEnum } from '@/views/Components/Table/config'
+import { ref, h } from 'vue'
+import { ElTag } from 'element-plus'
+import { BaseButton } from '@/components/Button'
 
-// 接口参数type
 interface Params {
   pageIndex?: number
   pageSize?: number
 }
 
+const { t } = useI18n()
+
 const columns: TableColumn[] = [
   {
-    field: 'index',
-    label: localesFn('index'),
-    type: 'index'
-  },
-  {
     field: 'title',
-    label: localesFn('title')
+    label: t('tableDemo.title')
   },
   {
     field: 'author',
-    label: localesFn('author')
+    label: t('tableDemo.author')
   },
   {
     field: 'display_time',
-    label: localesFn('displayTime'),
+    label: t('tableDemo.displayTime'),
     sortable: true
   },
   {
     field: 'importance',
-    label: localesFn('importance'),
+    label: t('tableDemo.importance'),
     formatter: (_: Recordable, __: TableColumn, cellValue: number) => {
       return h(
         ElTag,
-        { type: cellConfigEnum[cellValue].type },
-        () => cellConfigEnum[cellValue].text
+        {
+          type: cellValue === 1 ? 'success' : cellValue === 2 ? 'warning' : 'danger'
+        },
+        () =>
+          cellValue === 1
+            ? t('tableDemo.important')
+            : cellValue === 2
+              ? t('tableDemo.good')
+              : t('tableDemo.commonly')
       )
     }
   },
   {
     field: 'pageviews',
-    label: localesFn('pageviews')
+    label: t('tableDemo.pageviews')
   },
   {
     field: 'action',
-    label: localesFn('action')
+    label: t('tableDemo.action'),
+    slots: {
+      default: (data) => {
+        return (
+          <BaseButton type="primary" onClick={() => actionFn(data)}>
+            {t('tableDemo.action')}
+          </BaseButton>
+        )
+      }
+    }
   }
 ]
 
 const loading = ref(true)
-// 列表数据
-const tableDataList = ref<TableData[]>([])
 
-/**
- * @method 获取列表数据
- * @param params
- */
+let tableDataList = ref<TableData[]>([])
+
 const getTableList = async (params?: Params) => {
   const res = await getTableListApi(
     params || {
@@ -86,23 +88,18 @@ const getTableList = async (params?: Params) => {
 
 getTableList()
 
-const actionFn = (data: TableSlotDefault) => {
-  console.log(data, '当前行数据')
+const actionFn = (data: any) => {
+  console.log(data)
 }
 </script>
+
 <template>
-  <ContentWrap :title="localesFn('title')" :message="localesFn('tableDes')">
+  <ContentWrap :title="t('tableDemo.table')" :message="t('tableDemo.tableDes')">
     <Table
       :columns="columns"
       :data="tableDataList"
       :loading="loading"
       :defaultSort="{ prop: 'display_time', order: 'descending' }"
-    >
-      <template #action="data">
-        <ElButton type="primary" @click="actionFn(data)">
-          {{ localesFn('action') }}
-        </ElButton>
-      </template>
-    </Table>
+    />
   </ContentWrap>
 </template>

@@ -125,8 +125,6 @@ export default {
     getCode: 'Get code'
   },
   router: {
-    windiPage: 'windi Page',
-    vueStudy: 'Vue Study',
     login: 'Login',
     level: 'Multi level menu',
     menu: 'Menu',
