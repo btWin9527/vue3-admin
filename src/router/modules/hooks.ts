@@ -1,7 +1,4 @@
 import { Layout } from '@/utils/routerHelper'
-import { useI18n } from '@/hooks/web/useI18n'
-
-const { t } = useI18n()
 
 export const useHooksRouter: AppRouteRecordRaw = {
   path: '/hooks',
@@ -44,6 +41,22 @@ export const useHooksRouter: AppRouteRecordRaw = {
       name: 'UseNetwork',
       meta: {
         title: 'useNetwork'
+      }
+    },
+    {
+      path: 'useTagsView',
+      component: () => import('@/views/hooks/useTagsView.vue'),
+      name: 'UseTagsView',
+      meta: {
+        title: 'useTagsView'
+      }
+    },
+    {
+      path: 'useValidator',
+      component: () => import('@/views/hooks/useValidator.vue'),
+      name: 'useValidator',
+      meta: {
+        title: 'useValidator'
       }
     }
   ]
