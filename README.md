@@ -148,26 +148,72 @@ VITE_APP_TITLE=ElementAdmin
 
 ```
 
-package.json
 
-```json
-{
-  "script": {
-    "dev": "vite --mode base"
-  }
+### 1.7 jsx支持配置
+
+**依赖下载**
+
+```shell
+pnpm i @vitejs/plugin-vue@5.0.4  @vitejs/plugin-vue-jsx@3.1.0
+```
+
+**vite.config.ts配置**
+
+```ts
+import Vue from "@vitejs/plugin-vue";
+import VueJsx from "@vitejs/plugin-vue-jsx";
+
+// ...
+export default ({ command, mode }: ConfigEnv): UserConfig => {
+  return {
+    plugins: [
+      Vue({
+        script: {
+          // 开启defineModel
+          defineModel: true
+        }
+      }),
+      VueJsx()
+    ]
+  };
 }
 ```
 
-## 2. 数据配置
+### 1.8 配置unocss
 
-### 2.1 mock数据配置
+**依赖下载**
 
-### 2.2 axios配置
+```shell
+pnpm i -D unocss@0.58.5 @unocss/transformer-variant-group@0.58.5
+```
+**vite.config.ts配置**
 
-## 3. 页面配置
+```ts
+import UnoCSS from 'unocss/vite'
 
-### 3.1 element-plus引入
+// ...
+export default ({ command, mode }: ConfigEnv): UserConfig => {
+  return {
+    plugins: [
+      UnoCSS()
+    ]
+  };
+}
+```
 
-### 3.2 layout页面
+**main.ts配置**
 
-### 3.3 登陆页功能实现
+```ts
+// 全局导入uno.css样式
+import 'virtual:uno.css'
+
+```
+
+**配置文件 uno.config.ts**
+
+> 具体配置可看官方文档 [文档](https://unocss.dev/guide/)
+
+```ts
+// ...
+// 
+```
