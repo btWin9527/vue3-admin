@@ -4,6 +4,7 @@ import type { App } from 'vue'
 import { Layout, getParentLayout } from '@/utils/routerHelper'
 import { useI18n } from '@/hooks/web/useI18n'
 import { NO_RESET_WHITE_LIST } from '@/constants'
+import { useHooksRouter } from '@/router/modules/hooks'
 
 const { t } = useI18n()
 
@@ -80,6 +81,7 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
 ]
 
 export const asyncRouterMap: AppRouteRecordRaw[] = [
+  useHooksRouter,
   {
     path: '/dashboard',
     component: Layout,
@@ -108,22 +110,6 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         meta: {
           title: t('router.workplace'),
           noCache: true
-        }
-      }
-    ]
-  },
-  {
-    path: '/external-link',
-    component: Layout,
-    meta: {},
-    name: 'ExternalLink',
-    children: [
-      {
-        path: 'https://element-plus-admin-doc.cn/',
-        name: 'DocumentLink',
-        meta: {
-          title: t('router.document'),
-          icon: 'clarity:document-solid'
         }
       }
     ]
@@ -458,67 +444,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: '/hooks',
-    component: Layout,
-    redirect: '/hooks/useWatermark',
-    name: 'Hooks',
-    meta: {
-      title: 'hooks',
-      icon: 'ic:outline-webhook',
-      alwaysShow: true
-    },
-    children: [
-      {
-        path: 'useWatermark',
-        component: () => import('@/views/hooks/useWatermark.vue'),
-        name: 'UseWatermark',
-        meta: {
-          title: 'useWatermark'
-        }
-      },
-      {
-        path: 'useTagsView',
-        component: () => import('@/views/hooks/useTagsView.vue'),
-        name: 'UseTagsView',
-        meta: {
-          title: 'useTagsView'
-        }
-      },
-      {
-        path: 'useValidator',
-        component: () => import('@/views/hooks/useValidator.vue'),
-        name: 'UseValidator',
-        meta: {
-          title: 'useValidator'
-        }
-      },
-      {
-        path: 'useCrudSchemas',
-        component: () => import('@/views/hooks/useCrudSchemas.vue'),
-        name: 'UseCrudSchemas',
-        meta: {
-          title: 'useCrudSchemas'
-        }
-      },
-      {
-        path: 'useClipboard',
-        component: () => import('@/views/hooks/useClipboard.vue'),
-        name: 'UseClipboard',
-        meta: {
-          title: 'useClipboard'
-        }
-      },
-      {
-        path: 'useNetwork',
-        component: () => import('@/views/hooks/useNetwork.vue'),
-        name: 'UseNetwork',
-        meta: {
-          title: 'useNetwork'
-        }
-      }
-    ]
-  },
+
   {
     path: '/level',
     component: Layout,
