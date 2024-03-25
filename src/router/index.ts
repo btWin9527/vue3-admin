@@ -8,6 +8,9 @@ import { useHooksRouter } from '@/router/modules/hooks'
 
 const { t } = useI18n()
 
+/**
+ * 路由列表在登录时进行更新
+ */
 export const constantRouterMap: AppRouteRecordRaw[] = [
   {
     path: '/',

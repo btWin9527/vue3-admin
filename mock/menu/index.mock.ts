@@ -86,34 +86,6 @@ export default [
               ]
             },
             {
-              path: '/external-link',
-              component: '#',
-              meta: {
-                title: '文档',
-                icon: 'clarity:document-solid'
-              },
-              name: 'ExternalLink',
-              status: Mock.Random.integer(0, 1),
-              id: 4,
-              type: 0,
-              parentId: undefined,
-              title: '文档',
-              children: [
-                {
-                  path: 'https://element-plus-admin-doc.cn/',
-                  name: 'DocumentLink',
-                  status: Mock.Random.integer(0, 1),
-                  id: 5,
-                  type: 1,
-                  parentId: 4,
-                  title: '文档',
-                  meta: {
-                    title: '文档'
-                  }
-                }
-              ]
-            },
-            {
               path: '/level',
               component: '#',
               redirect: '/level/menu1/menu1-1/menu1-1-1',

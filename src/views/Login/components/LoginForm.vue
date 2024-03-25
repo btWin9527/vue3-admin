@@ -274,7 +274,6 @@ const getRole = async () => {
       : await getTestRoleApi(params)
   if (res) {
     const routers = res.data || []
-    console.log(routers, 'routersroutersrouters')
     userStore.setRoleRouters(routers)
     appStore.getDynamicRouter && appStore.getServerDynamicRouter
       ? await permissionStore.generateRoutes('server', routers).catch(() => {})
