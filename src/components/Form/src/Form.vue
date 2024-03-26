@@ -89,25 +89,18 @@ export default defineComponent({
     // }
   },
   emits: ['register'],
-  setup(props, { slots, expose, emit }) {
-    // element form 实例
+  setup(props, { slot, expose, emit }) {
+    // element form实例
     const elFormRef = ref<ComponentRef<typeof ElForm>>()
-
     const mergeProps = ref<FormProps>({})
-
     const getProps = computed(() => {
       const propsObj = { ...props }
       Object.assign(propsObj, unref(mergeProps))
       return propsObj
     })
-
     // 存储表单实例
     const formComponents = ref({})
-
     // 存储form-item实例
-    const formItemComponents = ref({})
-
-    // 表单数据
     const formModel = ref<Recordable>(props.model)
 
     onMounted(() => {
@@ -125,7 +118,6 @@ export default defineComponent({
 
     const delSchema = (field: string) => {
       const { schema } = unref(getProps)
-
       const index = findIndex(schema, (v: FormSchema) => v.field === field)
       if (index > -1) {
         schema.splice(index, 1)
@@ -141,7 +133,7 @@ export default defineComponent({
       schema.push(formSchema)
     }
 
-    const setSchema = (schemaProps: FormSetProps[]) => {
+    const setSchema = (schemaProps: FormSchema[]) => {
       const { schema } = unref(getProps)
       for (const v of schema) {
         for (const item of schemaProps) {
@@ -151,7 +143,6 @@ export default defineComponent({
         }
       }
     }
-
     const getOptions = async (fn: Function, item: FormSchema) => {
       const options = await fn()
       setSchema([
@@ -167,19 +158,11 @@ export default defineComponent({
     }
 
     /**
-     * @description: 获取表单组件实例
+     * @desc: 获取表单组件实例
      * @param filed 表单字段
      */
     const getComponentExpose = (filed: string) => {
       return unref(formComponents)[filed]
-    }
-
-    /**
-     * @description: 获取formItem实例
-     * @param filed 表单字段
-     */
-    const getFormItemExpose = (filed: string) => {
-      return unref(formItemComponents)[filed]
     }
 
     const setComponentRefMap = (ref: any, filed: string) => {
@@ -187,7 +170,7 @@ export default defineComponent({
     }
 
     const setFormItemRefMap = (ref: any, filed: string) => {
-      formItemComponents.value[filed] = ref
+      formComponents.value[filed] = ref
     }
 
     expose({
@@ -246,140 +229,8 @@ export default defineComponent({
         })
     }
 
-    // 渲染formItem
-    const renderFormItem = (item: FormSchema) => {
-      // 如果有optionApi，优先使用optionApi
-      if (item.optionApi) {
-        // 内部自动调用接口，不影响其它渲染
-        getOptions(item.optionApi, item)
-      }
-      const formItemSlots: Recordable = {
-        default: () => {
-          if (item?.formItemProps?.slots?.default) {
-            return item?.formItemProps?.slots?.default(formModel.value)
-          } else {
-            const Com = componentMap[item.component as string] as ReturnType<typeof defineComponent>
-
-            const { autoSetPlaceholder } = unref(getProps)
-
-            const componentSlots = (item?.componentProps as any)?.slots || {}
-            const slotsMap: Recordable = {
-              ...setItemComponentSlots(componentSlots)
-            }
-            // // 如果是select组件，并且没有自定义模板，自动渲染options
-            if (item.component === ComponentNameEnum.SELECT) {
-              slotsMap.default = !componentSlots.default
-                ? () => renderSelectOptions(item)
-                : () => {
-                    return componentSlots.default(
-                      unref((item?.componentProps as SelectComponentProps)?.options)
-                    )
-                  }
-            }
-
-            // 虚拟列表
-            if (item.component === ComponentNameEnum.SELECT_V2 && componentSlots.default) {
-              slotsMap.default = ({ item }) => {
-                return componentSlots.default(item)
-              }
-            }
-
-            // 单选框组和按钮样式
-            if (
-              item.component === ComponentNameEnum.RADIO_GROUP ||
-              item.component === ComponentNameEnum.RADIO_BUTTON
-            ) {
-              slotsMap.default = !componentSlots.default
-                ? () => renderRadioOptions(item)
-                : () => {
-                    return componentSlots.default(
-                      unref((item?.componentProps as CheckboxGroupComponentProps)?.options)
-                    )
-                  }
-            }
-
-            // 多选框组和按钮样式
-            if (
-              item.component === ComponentNameEnum.CHECKBOX_GROUP ||
-              item.component === ComponentNameEnum.CHECKBOX_BUTTON
-            ) {
-              slotsMap.default = !componentSlots.default
-                ? () => renderCheckboxOptions(item)
-                : () => {
-                    return componentSlots.default(
-                      unref((item?.componentProps as RadioGroupComponentProps)?.options)
-                    )
-                  }
-            }
-
-            const Comp = () => {
-              // 如果field是多层路径，需要转换成对象
-              const itemVal = computed({
-                get: () => {
-                  return get(formModel.value, item.field)
-                },
-                set: (val) => {
-                  set(formModel.value, item.field, val)
-                }
-              })
-
-              return item.component === ComponentNameEnum.UPLOAD ? (
-                <Com
-                  vModel:file-list={itemVal.value}
-                  ref={(el: any) => setComponentRefMap(el, item.field)}
-                  {...(autoSetPlaceholder && setTextPlaceholder(item))}
-                  {...setComponentProps(item)}
-                  style={
-                    item.componentProps?.style || {
-                      width: '100%'
-                    }
-                  }
-                >
-                  {{ ...slotsMap }}
-                </Com>
-              ) : (
-                <Com
-                  vModel={itemVal.value}
-                  ref={(el: any) => setComponentRefMap(el, item.field)}
-                  {...(autoSetPlaceholder && setTextPlaceholder(item))}
-                  {...setComponentProps(item)}
-                  style={
-                    item.componentProps?.style || {
-                      width: '100%'
-                    }
-                  }
-                >
-                  {{ ...slotsMap }}
-                </Com>
-              )
-            }
-
-            return <>{Comp()}</>
-          }
-        }
-      }
-      if (item?.formItemProps?.slots?.label) {
-        formItemSlots.label = (...args: any[]) => {
-          return (item?.formItemProps?.slots as any)?.label(...args)
-        }
-      }
-      if (item?.formItemProps?.slots?.error) {
-        formItemSlots.error = (...args: any[]) => {
-          return (item?.formItemProps?.slots as any)?.error(...args)
-        }
-      }
-      return (
-        <ElFormItem
-          v-show={!item.hidden}
-          ref={(el: any) => setFormItemRefMap(el, item.field)}
-          {...(item.formItemProps || {})}
-          prop={item.field}
-          label={item.label || ''}
-        >
-          {formItemSlots}
-        </ElFormItem>
-      )
-    }
+    // 渲染FormItem
+    const renderFormItem = (item: FormSchema) => {}
 
     // 过滤传入Form组件的属性
     const getFormBindValue = () => {
@@ -387,7 +238,7 @@ export default defineComponent({
       const delKeys = ['schema', 'isCol', 'autoSetPlaceholder', 'isCustom', 'model']
       const props = { ...unref(getProps) }
       for (const key in props) {
-        if (delKeys.indexOf(key) !== -1) {
+        if (delKeys.includes(key)) {
           delete props[key]
         }
       }
@@ -417,7 +268,6 @@ export default defineComponent({
   }
 })
 </script>
-
 <style lang="less" scoped>
 .@{elNamespace}-form.@{namespace}-form .@{elNamespace}-row {
   margin-right: 0 !important;
@@ -430,6 +280,7 @@ export default defineComponent({
       min-width: 229.5px;
     }
   }
+
   .@{elNamespace}-input-number {
     // 229.5px是兼容el-input-number的最小宽度,
     min-width: 229.5px;

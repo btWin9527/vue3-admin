@@ -20,6 +20,7 @@ import {
   ISelectProps,
   UploadProps
 } from 'element-plus'
+
 import { IEditorConfig } from '@wangeditor/editor'
 import { JsonEditorProps } from '@/components/JsonEditor'
 import { IAgreeProps } from '@/components/IAgree'
@@ -61,7 +62,10 @@ export enum ComponentNameEnum {
   I_AGREE = 'IAgree'
 }
 
-type CamelCaseComponentName = keyof typeof ComponentNameEnum extends infer K
+/**
+ * 定义组件命名规则
+ */
+type CameCaseComponentName = keyof typeof ComponentNameEnum extends infer K
   ? K extends string
     ? K extends `${infer A}_${infer B}`
       ? `${Capitalize<Lowercase<A>>}${Capitalize<Lowercase<B>>}`
@@ -69,7 +73,7 @@ type CamelCaseComponentName = keyof typeof ComponentNameEnum extends infer K
     : never
   : never
 
-export type ComponentName = CamelCaseComponentName
+export type ComponentName = CameCaseComponentName
 
 export interface InputPasswordComponentProps {
   strength?: boolean
@@ -77,7 +81,7 @@ export interface InputPasswordComponentProps {
 }
 
 export interface InputComponentProps extends Partial<InputProps> {
-  rows?: number
+  row?: number
   on?: {
     blur?: (event: FocusEvent) => void
     focus?: (event: FocusEvent) => void
@@ -86,6 +90,7 @@ export interface InputComponentProps extends Partial<InputProps> {
     input?: (value: string | number) => void
   }
   slots?: {
+    default?: (...args: any[]) => JSX.Element | null
     prefix?: (...args: any[]) => JSX.Element | null
     suffix?: (...args: any[]) => JSX.Element | null
     prepend?: (...args: any[]) => JSX.Element | null
@@ -124,13 +129,17 @@ export interface SelectOption {
   value?: any
   key?: string | number
   options?: SelectOption[]
+
   [key: string]: any
 }
 
+/**
+ * Omit<K,T>类型让我们可以从另一个对象类型中剔除某些属性，并创建一个新的对象类型：
+ * K：是对象类型名称，T：是剔除K类型中的属性名称
+ * Partial＜T＞：快速把某个接口类型中定义的属性变成可选
+ */
 export interface SelectComponentProps extends Omit<Partial<ISelectProps>, 'options'> {
-  /**
-   * 数据源的字段别名
-   */
+  // 数据源的字段名
   props?: {
     key?: string
     value?: string
@@ -139,15 +148,15 @@ export interface SelectComponentProps extends Omit<Partial<ISelectProps>, 'optio
   }
   on?: {
     change?: (value: string | number | boolean | Object) => void
-    visibleChange?: (visible: boolean) => void
+    visibleChange?: (value: boolean) => void
     removeTag?: (tag: any) => void
     clear?: () => void
     blur?: (event: FocusEvent) => void
     focus?: (event: FocusEvent) => void
   }
   slots?: {
-    default?: (options: SelectOption[]) => JSX.Element[] | null
-    optionGroupDefault?: (item: SelectOption) => JSX.Element
+    default?: (options: SelectOption[]) => JSX.Element | null
+    optionGroupDefault?: (item: SelectOption[]) => JSX.Element | null
     optionDefault?: (option: SelectOption) => JSX.Element | null
     prefix?: (...args: any[]) => JSX.Element | null
     empty?: (...args: any[]) => JSX.Element | null
@@ -281,8 +290,10 @@ export interface RadioOption {
   border?: boolean
   size?: ComponentSize
   name?: string
+
   [key: string]: any
 }
+
 export interface RadioGroupComponentProps extends Partial<RadioGroupProps> {
   options?: RadioOption[]
   /**
@@ -336,6 +347,7 @@ export interface CheckboxOption {
   tabindex?: number | string
   id?: string
   controls?: boolean
+
   [key: string]: any
 }
 
@@ -666,5 +678,6 @@ export interface FormProps extends Partial<ElFormProps> {
   model?: Recordable
   autoSetPlaceholder?: boolean
   isCustom?: boolean
+
   [key: string]: any
 }
