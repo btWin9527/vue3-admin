@@ -456,6 +456,7 @@ let id = 0
 const imageUrl = ref('')
 
 const schema = reactive<FormSchema[]>([
+  // 输入框配置
   {
     field: 'field1',
     label: t('formDemo.input'),
@@ -520,6 +521,7 @@ const schema = reactive<FormSchema[]>([
       rows: 2
     }
   },
+  // 自动补全
   {
     field: 'field7',
     label: t('formDemo.autocomplete'),
@@ -568,6 +570,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 数字输入配置
   {
     field: 'field10',
     component: 'Divider',
@@ -588,6 +591,7 @@ const schema = reactive<FormSchema[]>([
     },
     value: 10
   },
+  // 选择器相关配置
   {
     field: 'field13',
     label: t('formDemo.select'),
@@ -767,6 +771,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 虚拟列表
   {
     field: 'field18',
     label: `${t('formDemo.selectV2')}`,
@@ -829,6 +834,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 级联选择器
   {
     field: 'field23',
     label: t('formDemo.cascader'),
@@ -863,6 +869,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 开关
   {
     field: 'field26',
     label: t('formDemo.switch'),
@@ -884,6 +891,7 @@ const schema = reactive<FormSchema[]>([
       inactiveIcon: <Icon icon="ep:close" />
     }
   },
+  // 评分
   {
     field: 'field29',
     label: t('formDemo.rate'),
@@ -909,6 +917,7 @@ const schema = reactive<FormSchema[]>([
       ]
     }
   },
+  // 颜色选择器
   {
     field: 'field32',
     label: t('formDemo.colorPicker'),
@@ -919,6 +928,7 @@ const schema = reactive<FormSchema[]>([
     label: t('formDemo.default'),
     component: 'ColorPicker'
   },
+  // 穿梭框
   {
     field: 'field34',
     label: t('formDemo.transfer'),
@@ -1010,6 +1020,7 @@ const schema = reactive<FormSchema[]>([
       span: 24
     }
   },
+  // 单选框
   {
     field: 'field38',
     label: t('formDemo.radio'),
@@ -1107,6 +1118,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 多选框
   {
     field: 'field41',
     label: t('formDemo.checkbox'),
@@ -1224,6 +1236,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 滑块
   {
     field: 'field44',
     component: 'Divider',
@@ -1235,6 +1248,7 @@ const schema = reactive<FormSchema[]>([
     label: t('formDemo.default'),
     value: 0
   },
+  // 日期选择器
   {
     field: 'field46',
     component: 'Divider',
@@ -1349,6 +1363,7 @@ const schema = reactive<FormSchema[]>([
       type: 'monthrange'
     }
   },
+  // 日期时间选择器
   {
     field: 'field56',
     component: 'Divider',
@@ -1400,6 +1415,7 @@ const schema = reactive<FormSchema[]>([
       type: 'datetimerange'
     }
   },
+  // 时间选择器
   {
     field: 'field60',
     component: 'Divider',
@@ -1410,6 +1426,7 @@ const schema = reactive<FormSchema[]>([
     component: 'TimePicker',
     label: t('formDemo.default')
   },
+  // 时间选择
   {
     field: 'field62',
     component: 'Divider',
@@ -1420,6 +1437,7 @@ const schema = reactive<FormSchema[]>([
     component: 'TimeSelect',
     label: t('formDemo.default')
   },
+  // 富文本
   {
     field: 'field64',
     component: 'Divider',
@@ -1434,6 +1452,7 @@ const schema = reactive<FormSchema[]>([
       span: 24
     }
   },
+  // 密码输入框
   {
     field: 'field66',
     component: 'Divider',
@@ -1447,6 +1466,7 @@ const schema = reactive<FormSchema[]>([
       strength: true
     }
   },
+  // 表单插槽
   {
     field: 'field68',
     component: 'Divider',
@@ -1480,6 +1500,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 远程加载
   {
     field: 'field70',
     component: 'Divider',
@@ -1547,6 +1568,7 @@ const schema = reactive<FormSchema[]>([
       return res
     }
   },
+  // 树形选择
   {
     field: 'field75',
     component: 'Divider',
@@ -1679,6 +1701,7 @@ const schema = reactive<FormSchema[]>([
       data: treeSelectData
     }
   },
+  // 文件上传
   {
     field: 'field82',
     component: 'Divider',
@@ -1761,6 +1784,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // json编辑
   {
     field: 'field85',
     component: 'Divider',
@@ -1775,6 +1799,7 @@ const schema = reactive<FormSchema[]>([
       b: 2
     }
   },
+  // 图标展示
   {
     field: 'field87',
     component: 'Divider',
@@ -1786,6 +1811,7 @@ const schema = reactive<FormSchema[]>([
     label: t('formDemo.default'),
     value: 'tdesign:archway'
   },
+  // 协议类文本
   {
     field: 'field89',
     component: 'Divider',
