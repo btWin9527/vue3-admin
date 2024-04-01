@@ -64,24 +64,37 @@ export default defineComponent({
     isCustom: propTypes.bool.def(false),
     // 表单label宽度
     labelWidth: propTypes.oneOfType([String, Number]).def('auto'),
+    // 表单校验规则
     rules: {
       type: Object as PropType<FormRules>,
       default: () => ({})
     },
+    // label位置
     labelPosition: propTypes.oneOf(['left', 'right', 'top']).def('right'),
+    // 表单域标签的后缀
     labelSuffix: propTypes.string.def(''),
+    // 是否显示必填字段的标签旁边的红色星号
     hideRequiredAsterisk: propTypes.bool.def(false),
+    // 设置必填符号 * 的位置
     requireAsteriskPosition: propTypes.oneOf(['left', 'right']).def('left'),
+    // 是否显示校验错误信息
     showMessage: propTypes.bool.def(true),
+    // 是否以行内形式展示校验信息
     inlineMessage: propTypes.bool.def(false),
+    // 是否在输入框中显示校验结果反馈图标
     statusIcon: propTypes.bool.def(false),
+    // 是否在 rules 属性改变后立即触发一次验证
     validateOnRuleChange: propTypes.bool.def(true),
+    // 用于控制该表单内组件的尺寸
     size: {
       type: String as PropType<ComponentSize>,
       default: undefined
     },
+    // 是否禁用表单form
     disabled: propTypes.bool.def(false),
+    // 是否开启错误表单信息滚动
     scrollToError: propTypes.bool.def(false),
+    // 滚动到错误表单位置（与页面底部对齐）
     scrollToErrorOffset: propTypes.oneOfType([Boolean, Object]).def(undefined)
     // onValidate: {
     //   type: Function as PropType<(prop: FormItemProp, isValid: boolean, message: string) => void>,
@@ -92,9 +105,9 @@ export default defineComponent({
   setup(props, { slots, expose, emit }) {
     // element form 实例
     const elFormRef = ref<ComponentRef<typeof ElForm>>()
-
+    // 暴露出去控制form props的数据
     const mergeProps = ref<FormProps>({})
-
+    // 将组件props和外部setProps的数据进行合并
     const getProps = computed(() => {
       const propsObj = { ...props }
       Object.assign(propsObj, unref(mergeProps))
@@ -122,7 +135,7 @@ export default defineComponent({
     const setProps = (props: FormProps = {}) => {
       mergeProps.value = Object.assign(unref(mergeProps), props)
     }
-
+    // 删除表单配置项
     const delSchema = (field: string) => {
       const { schema } = unref(getProps)
 
@@ -131,7 +144,7 @@ export default defineComponent({
         schema.splice(index, 1)
       }
     }
-
+    // 添加表单配置项
     const addSchema = (formSchema: FormSchema, index?: number) => {
       const { schema } = unref(getProps)
       if (index !== void 0) {
@@ -140,7 +153,7 @@ export default defineComponent({
       }
       schema.push(formSchema)
     }
-
+    // 设置表单配置项
     const setSchema = (schemaProps: FormSetProps[]) => {
       const { schema } = unref(getProps)
       for (const v of schema) {
@@ -151,7 +164,6 @@ export default defineComponent({
         }
       }
     }
-
     const getOptions = async (fn: Function, item: FormSchema) => {
       const options = await fn()
       setSchema([
