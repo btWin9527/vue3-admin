@@ -35,6 +35,7 @@ const rules = {
 }
 
 const schema = reactive<FormSchema[]>([
+  // 自定义
   {
     field: 'title',
     colProps: {
@@ -48,6 +49,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 输入框
   {
     field: 'username',
     label: t('login.username'),
@@ -60,6 +62,7 @@ const schema = reactive<FormSchema[]>([
       placeholder: 'admin or test'
     }
   },
+  // 密码输入组件
   {
     field: 'password',
     label: t('login.password'),
@@ -75,6 +78,7 @@ const schema = reactive<FormSchema[]>([
       placeholder: 'admin or test'
     }
   },
+  // 自定义表单，默认数据取自userStore
   {
     field: 'tool',
     colProps: {
@@ -97,6 +101,7 @@ const schema = reactive<FormSchema[]>([
       }
     }
   },
+  // 自定义组件
   {
     field: 'login',
     colProps: {
