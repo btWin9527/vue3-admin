@@ -152,6 +152,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
       host: '0.0.0.0'
     },
+    // 预加载配置
     optimizeDeps: {
       include: [
         'vue',

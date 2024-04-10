@@ -1,3 +1,54 @@
+<!--
+Search 查询组件
+基于 Form 组件封装，支持收缩展开。
+
+Search 属性
+属性	说明	类型	可选值	默认值
+schema	生成 Search 的布局结构数组，详见	FormSchema	-	[]
+isCol	是否需要栅格布局	boolean	-	true
+labelWidth	表单 label 宽度	string/number	-	auto
+layout	操作按钮风格位置	string	inline/bottom	inline
+buttonPosition	底部操作按钮的对齐方式	string	left/center/right	center
+showSearch	是否显示查询按钮	boolean	-	true
+showReset	是否显示重置按钮	boolean	-	true
+expand	是否显示伸缩按钮	boolean	-	false
+expandField	伸缩的界限字段	string	-	-
+inline	是否是行内	boolean	-	true
+removeNoValueItem	是否自动去除空值	boolean	-	true
+model	初始化数据	object	-	-
+searchLoading	查询按钮加载状态	boolean	-	false
+resetLoading	重置按钮加载状态	boolean	-	false
+
+Search 事件
+方法名	说明	回调参数
+search	查询后的回调	data: Recordable
+reset	重置后的回调	data: Recordable
+
+Search 方法
+方法名	说明	回调参数
+setValues	用于设置表单值	(data: Recordable) => void
+setProps	用于设置表单属性	(props: Recordable) => void
+delSchema	用于删除表单结构	(field: string) => void
+addSchema	用于新增表单结构	(formSchema: FormSchema, index?: number) => void
+setSchema	用于编辑表单结构	(schemaProps: FormSetPropsType[]) => void
+getElFormExpose	用于获取 Form 组件的实例	() => Promise<typeof ElForm>
+
+复杂情况使用useSearch
+
+const { searchRegister, searchMethods } = useSearch()
+
+formMethods
+
+方法名	说明	回调参数
+setValues	用于设置表单值	(data: Recordable) => void
+setProps	用于设置表单属性	(props: Recordable) => void
+delSchema	用于删除表单结构	(field: string) => void
+addSchema	用于新增表单结构	(formSchema: FormSchema, index?: number) => void
+setSchema	用于编辑表单结构	(schemaProps: FormSetPropsType[]) => void
+getFormData	用于获取表单数据	<T = Recordable>() => Promise<T>
+
+
+-->
 <script setup lang="tsx">
 import { Form, FormSchema, FormSetProps } from '@/components/Form'
 import { PropType, computed, unref, ref, watch, onMounted } from 'vue'

@@ -1,3 +1,7 @@
+<!--
+封装icon组件
+@iconify/vue 满足全量icon
+-->
 <script setup lang="ts">
 import { computed, unref } from 'vue'
 import { ElIcon } from 'element-plus'

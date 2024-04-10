@@ -1,3 +1,21 @@
+<!--
+编辑器组件
+
+Editor 属性
+属性	说明	类型	可选值	默认值
+editorId	富文本组件唯一值，必填项	string	-	wangeEditor-1
+height	高度	string/number	-	500px
+editorConfig	wangeditor 组件的所有配置项	IEditorConfig	-	-
+modelValue	内容双向绑定，支持v-model	string	-	-
+
+Editor 事件
+方法名	说明	回调参数
+change	内容改变时，返回 editor 实例	editor: IDomEditor
+
+Editor 方法
+方法名	说明	回调参数
+getEditorRef	获取 editor 实例	() => Promise<IDomEditor>
+-->
 <script setup lang="ts">
 import { onBeforeUnmount, computed, PropType, unref, nextTick, ref, watch, shallowRef } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'

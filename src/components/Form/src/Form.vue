@@ -1,3 +1,37 @@
+<!--
+  通过formSchema配置，生成form表单
+formMethods
+属性	说明	类型	可选值	默认值
+schema	生成 Form 的布局结构数组，详见	FormSchema	-	[]
+isCol	是否需要栅格布局	boolean	-	true
+model	表单数据对象	Recordable	-	{}
+autoSetPlaceholder	是否自动设置 placeholder	boolean	-	true
+isCustom	是否自定义内容	boolean	-	false
+labelWidth	表单 label 宽度	string/number	-	auto
+
+Schema
+属性	说明	类型	可选值	默认值
+field	唯一值，必填项	string	-	-
+label	标题	string	-	-
+colProps	element-plus 的 col 组件属性	ColProps	-	-
+componentProps	表单组件子属性，详见	any	-	-
+formItemProps	element-plus 的 form-item 组件属性，详见	FormItemProps	-	-
+component	需要渲染的表单子组件	ComponentName	-	-
+value	表单子组件初始值	any	-	-
+hidden	表单子组件是否隐藏	boolean	-	-
+remove	表单子组件是否隐藏，如果为true，会连同值一同删除，类似v-if	boolean	-	-
+optionApi	加载 options 方法	() => Promise<any>	-	-
+
+Form 方法
+方法名	说明	回调参数
+setValues	用于设置表单值	(data: Recordable) => void
+setProps	用于设置表单属性	(props: Recordable) => void
+delSchema	用于删除表单结构	(field: string) => void
+addSchema	用于新增表单结构	(formSchema: FormSchema, index?: number) => void
+setSchema	用于编辑表单结构	(schemaProps: FormSetPropsType[]) => void
+getComponentExpose	用于获取表单子组件的实例，如 ElInput 实例	(field: string) => any
+getFormItemExpose	用于获取 FormItem 组件的实例	() => Promise<typeof FormItem>
+-->
 <script lang="tsx">
 import { PropType, defineComponent, ref, computed, unref, watch, onMounted } from 'vue'
 import {

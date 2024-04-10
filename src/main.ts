@@ -1,6 +1,6 @@
 import 'vue/jsx'
 
-// 引入windi css
+// 引入unocss css
 import '@/plugins/unocss'
 
 // 导入全局的svg图标

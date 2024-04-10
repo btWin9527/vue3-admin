@@ -1,3 +1,6 @@
+<!--
+用于颗粒级别的按钮权限组件
+-->
 <script setup lang="ts">
 import { propTypes } from '@/utils/propTypes'
 import { computed, unref } from 'vue'

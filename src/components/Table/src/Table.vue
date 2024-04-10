@@ -1,3 +1,52 @@
+<!--
+ 表格组件，基础用法类似el-table
+
+ 属性	说明	类型	可选值	默认值
+pageSize	每页显示多少条，支持 v-model 双向绑定	number	-	10
+currentPage	当前页，支持 v-model 双向绑定	number	-	1
+selection	是否多选	boolean	-	true
+showOverflowTooltip	是否所有的超出隐藏，优先级低于 schema 中的 showOverflowTooltip	boolean	-	true
+columns	表头结构，详见	TableColumn[]	-	[]
+expand	是否显示展开行	boolean	-	false
+pagination	是否展示分页，详见	Pagination/undefined	-	-
+reserveSelection	仅对 type=selection 的列有效，类型为 Boolean，为 true 则会在数据更新之后保留之前选中的数据（需指定 row-key）	boolean	-	false
+loading	加载状态	boolean	-	false
+reserveIndex	是否叠加索引	boolean	-	false
+align	内容对齐方式	string	left/center/right	left
+headerAlign	表头对齐方式	string	left/center/right	left
+data	表格数据	Recordable[]	-	[]
+showAction	是否显示表格操作	boolean	-	false
+imagePreview	需要展示图片的字段	string[]	-	-
+videoPreview	需要展示视频的字段	string[]	-	-
+customContent	是否自定义内容	boolean	-	false
+cardBodyStyle	卡片内容样式	CSSProperties	-	-
+cardBodyClass	卡片内容类名	string	-	-
+cardWrapStyle	卡片容器样式	CSSProperties	-	-
+cardWrapClass	卡片容器类名	string	-	-
+
+ 复杂情况配置useTable使用
+
+tableState（表格状态）
+
+属性	说明	类型	可选值	默认值
+pageSize	每页显示多少条	number	-	10
+currentPage	当前页	number	-	1
+total	总条数	number	-	-
+dataList	表格数据	any[]	-	[]
+loading	表格是否加载中	boolean	-	false
+
+tableMethods
+
+方法名	说明	回调参数
+setProps	用于表格组件属性	(props: Recordable) => void
+getList	获取表格数据	() => Promise<void>
+setColumn	设置表头结构	(columnProps: TableSetProps[]) => void
+addColumn	新增表头结构	(tableColumn: TableColumn, index?: number) => void
+delColumn	删除表头结构	(field: string) => void
+getElTableExpose	获取 ElTable 实例	() => Promise<typeof ElTable>
+refresh	刷新表格	() => void
+delList	删除数据	(idsLength: number) => Promise<void>
+ -->
 <script lang="tsx">
 import {
   ElTable,

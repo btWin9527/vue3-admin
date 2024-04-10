@@ -1,3 +1,6 @@
+<!--
+ el-button进行二次封装扩展，支持修改主题色
+ -->
 <script setup lang="ts">
 import { useDesign } from '@/hooks/web/useDesign'
 import { ElButton, ComponentSize, ButtonType } from 'element-plus'

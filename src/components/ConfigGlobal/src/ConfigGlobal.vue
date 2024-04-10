@@ -1,3 +1,7 @@
+<!--
+全局配置国际化设置
+el-config-provider
+-->
 <script setup lang="ts">
 import { provide, computed, watch, onMounted } from 'vue'
 import { propTypes } from '@/utils/propTypes'

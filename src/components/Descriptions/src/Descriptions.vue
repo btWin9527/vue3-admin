@@ -1,3 +1,29 @@
+<!--
+Descriptions 描述组件
+
+Descriptions 属性
+除以下参数外，还支持 element-plus 的 Descriptions 所有属性，详见
+
+属性	说明	类型	可选值	默认值
+title	标题	string	-	-
+message	提示	string	-	-
+collapse	是否显示展开按钮	boolean	-	true
+schema	布局结构数据，详见	DescriptionsSchema[]	-	[]
+data	展示的数据	Recordable	-	{}
+
+Schema
+属性	说明	类型	可选值	默认值
+span	栅格占比	number	-	-
+field	字段名，唯一值，需要与 data 中的属性名对应	string	-	-
+label	列表标题	string	-	-
+width	列表宽度	string/number	-	-
+minWidth	列表最小宽度	string/number	-	-
+align	内容对齐方式	string	left/center/right	left
+labelAlign	标题对齐方式	string	left/center/right	left
+className	自定义内容标签类名	string	-	-
+labelClassName	自定义标题标签类名	string	-	-
+slots	插槽对象	object	-	-
+-->
 <script lang="tsx">
 import { ElCollapseTransition, ElTooltip, ElRow, ElCol } from 'element-plus'
 import { useDesign } from '@/hooks/web/useDesign'

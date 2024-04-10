@@ -1,3 +1,12 @@
+<!--
+ Echart 图表组件 （对 echarts 进行封装，自适应窗口大小）
+
+Echart 属性
+属性	说明	类型	可选值	默认值
+options	echart 对应的配置项，详见	EChartsOption	-	[]
+width	图表宽度	string/number	-	-
+height	图表高度	string/number	-	500
+ -->
 <script setup lang="ts">
 import type { EChartsOption } from 'echarts'
 import echarts from '@/plugins/echarts'
