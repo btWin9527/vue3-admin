@@ -1,7 +1,7 @@
 {
   "name": "vue3-admin",
   "version": "2.7.0",
-  "description": "基于vue3、element-plus、typesScript、vite4的后台集成方案。",
+  "description": "基于vue3、element-plus、typesScript、vite5的后台集成方案。",
   "author": "btWin",
   "private": false,
   "scripts": {
