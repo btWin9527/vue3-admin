@@ -1,4 +1,4 @@
-# vue-element-plus-admin
+# vue3-admin
 ## 1. 项目搭建
 ### 1.1 依赖
 
