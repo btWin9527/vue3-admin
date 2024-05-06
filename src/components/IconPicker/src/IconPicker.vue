@@ -1,3 +1,8 @@
+<!--
+  图标选择组件
+  const icons = [epIcons, antIcons, tIcons]
+  如果需要添加其它图标集，可以在这里添加
+-->
 <script setup lang="ts">
 import epIcons from './data/icons.ep'
 import antIcons from './data/icons.ant-design'
