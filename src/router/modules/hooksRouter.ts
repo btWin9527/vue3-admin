@@ -1,6 +1,4 @@
-import { Layout } from '@/utils/routerHelper'
-
-export const useHooksRouter: AppRouteRecordRaw = {
+const generateUseHooksRouter = ({ Layout }) => ({
   path: '/hooks',
   component: Layout,
   redirect: '/hooks/useWatermark',
@@ -44,4 +42,6 @@ export const useHooksRouter: AppRouteRecordRaw = {
       }
     }
   ]
-}
+})
+
+export default generateUseHooksRouter
