@@ -15,6 +15,8 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
 import UnoCSS from 'unocss/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
+// 项目支持https
+// import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // https://vitejs.dev/config/
 const root = process.cwd()
@@ -34,6 +36,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   return {
     base: env.VITE_BASE_PATH,
     plugins: [
+      // basicSsl(),
       VueDevTools(),
       Vue({
         script: {
@@ -140,6 +143,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       cssCodeSplit: !(env.VITE_USE_CSS_SPLIT === 'false')
     },
     server: {
+      // https: true,
       port: 4000,
       proxy: {
         // 选项写法
