@@ -18,7 +18,7 @@ const getKey = (namespace: string | undefined, key: string) => {
   if (key.startsWith(namespace)) {
     return key
   }
-  return `${namespace}.${key}`
+  return `${adminNamespace}.${key}`
 }
 
 export const useI18n = (

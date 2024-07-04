@@ -98,7 +98,7 @@ export default defineComponent({
         >
           {{
             default: () => {
-              const { renderMenuItem } = useRenderMenuItem()
+              const { renderMenuItem } = useRenderMenuItem(menuMode)
               return renderMenuItem(unref(routers))
             }
           }}
@@ -126,7 +126,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-@prefix-cls: ~'@{namespace}-menu';
+@prefix-cls: ~'@{adminNamespace}-menu';
 
 .@{prefix-cls} {
   position: relative;
@@ -227,7 +227,7 @@ export default defineComponent({
 </style>
 
 <style lang="less">
-@prefix-cls: ~'@{namespace}-menu-popper';
+@prefix-cls: ~'@{adminNamespace}-menu';
 
 .@{prefix-cls}--vertical,
 .@{prefix-cls}--horizontal {
@@ -255,6 +255,23 @@ export default defineComponent({
     &:hover {
       background-color: var(--left-menu-bg-active-color) !important;
     }
+  }
+}
+
+@submenu-prefix-cls: ~'@{adminNamespace}-submenu-popper';
+
+// 设置子菜单溢出时滚动样式
+.@{submenu-prefix-cls}--vertical {
+  overflow-y: auto;
+  max-height: 100%;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(144 147 153 / 30%);
+    border-radius: 4px;
   }
 }
 </style>
