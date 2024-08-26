@@ -56,7 +56,8 @@
     "xgplayer": "^3.0.13"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
     "@commitlint/cli": "^19.0.1",
     "@commitlint/config-conventional": "^19.0.0",
     "@iconify/json": "^2.2.187",
