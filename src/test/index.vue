@@ -1,10 +1,10 @@
 <template>
   <div class="table-page">
     <!-- 头部 -->
-    <jy-title level="1">{{$t('index_1')}}</jy-title>
+    <jy-title level="1">{{ $t('index_1') }}</jy-title>
     <!-- 搜索 -->
     <search-show-hidden
-      style="margin: 20px auto;"
+      style="margin: 20px auto"
       :isShowDate="false"
       :echoForm="echoForm"
       @handleReset="handleReset"
@@ -22,11 +22,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item :label="$t('index_4')">
-          <el-select
-            v-model="listQuery.riskPointTypeId"
-            clearable
-            :placeholder="$t('index_5')"
-          >
+          <el-select v-model="listQuery.riskPointTypeId" clearable :placeholder="$t('index_5')">
             <el-option
               v-for="(item, index) in riskPointTypeList"
               :key="index"
@@ -37,11 +33,7 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('index_6')">
-          <el-select
-            v-model="listQuery.riskLevelId"
-            clearable
-            :placeholder="$t('index_5')"
-          >
+          <el-select v-model="listQuery.riskLevelId" clearable :placeholder="$t('index_5')">
             <el-option
               v-for="(item, index) in riskLevelList"
               :key="index"
@@ -74,11 +66,12 @@
       @sizeChange="handleSizeChange"
       @currentChange="handleIndexChange"
     >
-      <template v-slot:default="{item, row}">
+      <template v-slot:default="{ item, row }">
         <span v-if="item.property === 'executeUserName'">
           {{
-            row.riskPointExecutorList && row.riskPointExecutorList.length ? row.riskPointExecutorList.map((item) => item.executeUser)
-                  .join(",") : "-"
+            row.riskPointExecutorList && row.riskPointExecutorList.length
+              ? row.riskPointExecutorList.map((item) => item.executeUser).join(',')
+              : '-'
           }}
         </span>
         <template v-else-if="item.property === 'riskLevelId'">
@@ -86,57 +79,76 @@
             v-if="row.riskLevelId"
             class="custom-tag"
             :class="handleRiskLevelClass(row.riskLevelId)"
-          >{{ row.riskLevel }}{{ row.riskAdjustRecord ? `(${row.riskAdjustRecord.adjustAssessParam})` : '' }}</span>
+            >{{ row.riskLevel
+            }}{{ row.riskAdjustRecord ? `(${row.riskAdjustRecord.adjustAssessParam})` : '' }}</span
+          >
           <span v-else>-</span>
         </template>
         <span v-else-if="item.property === 'riskAdjustRecord'">
-          {{ row.riskAdjustRecord ? `${row.riskAdjustRecord.riskLevel}(${row.riskAdjustRecord.assessParam})` : '-'}}
+          {{
+            row.riskAdjustRecord
+              ? `${row.riskAdjustRecord.riskLevel}(${row.riskAdjustRecord.assessParam})`
+              : '-'
+          }}
         </span>
         <span v-else-if="item.property === 'locationName'">
-          {{ row.riskAddressList ? row.riskAddressList.map((item) => item.addressName).join(",") : "-"}}
+          {{
+            row.riskAddressList
+              ? row.riskAddressList.map((item) => item.addressName).join(',')
+              : '-'
+          }}
         </span>
         <span v-else-if="item.property === 'specialityName'">
-          {{ row.specialityList ? row.specialityList.map((item) => item.specialityName).join(",") : "-"}}
+          {{
+            row.specialityList
+              ? row.specialityList.map((item) => item.specialityName).join(',')
+              : '-'
+          }}
         </span>
         <span v-else>
-          {{ row[item.property]? row[item.property] : '-'}}
+          {{ row[item.property] ? row[item.property] : '-' }}
         </span>
       </template>
-      <template v-slot:operator="{row}">
+      <template v-slot:operator="{ row }">
         <el-button
           @click.native.prevent="handleDetail(row, 'update')"
           v-if="riskControl_relate"
           type="primary"
           size="mini"
           plain
-        >{{$t('index_8')}}</el-button>
+          >{{ $t('index_8') }}</el-button
+        >
         <el-button
           @click.native.prevent="handleDetail(row, 'detail')"
           type="primary"
           size="mini"
           plain
-        >{{$t('index_9')}}</el-button>
+          >{{ $t('index_9') }}</el-button
+        >
         <el-button
           type="warning"
           size="mini"
           plain
           v-if="row.riskPointTypeId !== '001' && riskControl_return"
           @click="handleEdit(row)"
-        >{{$t('index_10')}}</el-button>
+          >{{ $t('index_10') }}</el-button
+        >
         <el-button
           @click.native.prevent="handleCancel(row)"
           v-if="row.riskPointTypeId === '001' && riskControlList_can"
           type="warning"
           plain
           size="mini"
-        >{{$t('index_11')}}</el-button>
+          >{{ $t('index_11') }}</el-button
+        >
         <el-button
           @click.native.prevent="handleDelete(row)"
           v-if="row.riskPointTypeId !== '001' && riskControlList_del"
           type="warning"
           plain
           size="mini"
-        >{{$t('index_12')}}</el-button>
+          >{{ $t('index_12') }}</el-button
+        >
       </template>
     </list-page>
     <!-- <list-page
@@ -375,33 +387,28 @@
 <script>
 import i18n from '../locales/index'
 
-import {
-  fetchList,
-  deleteRiskListById,
-  cancelRiskListById,
-  fetchFallback,
-} from "../api/api";
-import { getStore } from "@/util/store";
-import { fetchDict } from "../../../common/common";
-import { mapState } from "vuex";
+import { fetchList, deleteRiskListById, cancelRiskListById, fetchFallback } from '../api/api'
+import { getStore } from '@/util/store'
+import { fetchDict } from '../../../common/common'
+import { mapState } from 'vuex'
 import DetailDialog from './detail'
 import defaultConfig from '@/mixins/tableConfig/sams-risk-control/risk_list_detail'
 export default {
   components: {
-    DetailDialog,
+    DetailDialog
   },
-  data () {
+  data() {
     return {
       defaultConfig,
       total: 0,
       listQuery: {
         current: 1,
         size: 20,
-        riskPoint: "",
-        riskPointTypeId: "",
-        riskLevelId: "",
-        orgCode: "",
-        addressName: "",
+        riskPoint: '',
+        riskPointTypeId: '',
+        riskLevelId: '',
+        orgCode: '',
+        addressName: '',
         allSubordinateOrg: null
       }, // 搜索条件
       riskPointTypeList: [], // 风险点类型列表
@@ -414,7 +421,7 @@ export default {
         highlightCurrentRow: true, // 是否支持当前行高亮显示
         border: true, // 是否显示竖直方向得边框
         isIndexShow: true, // 是否显示索引
-        indexTitle: i18n.t('index_13'), // 索引头名称
+        indexTitle: i18n.t('index_13') // 索引头名称
       }, // table 的参数
       randomKey: new Date().getTime(),
       riskControlList_can: false, // 取消
@@ -424,20 +431,20 @@ export default {
       isShowDetailDialog: false, // 详情弹窗
       showInfoFlag: false,
       formCode: 'risk_list_detail',
-      moduleCode: "sams-risk-control",
+      moduleCode: 'sams-risk-control',
       echoForm: null,
       isLogicOrg: false
-    };
+    }
   },
   computed: {
     ...mapState({
-      userInfo: (state) => state.user.userInfo,
-    }),
+      userInfo: (state) => state.user.userInfo
+    })
   },
   watch: {
-    "$route.query": {
-      handler (val) {
-        console.log('val', val);
+    '$route.query': {
+      handler(val) {
+        console.log('val', val)
         if (val.planId) {
           this.listQuery.planId = val.planId
           this.listQuery.riskPointTypeId = val.riskPointTypeId
@@ -448,183 +455,184 @@ export default {
       deep: true
     }
   },
-  mounted () {
+  mounted() {
     if (process.env.VUE_APP_MAIN_APPLICATION) {
       this.isLogicOrg = true
     } else {
       this.isLogicOrg = false
     }
-    this.listQuery.orgCode = this.userInfo.orgCode;
+    this.listQuery.orgCode = this.userInfo.orgCode
     this.echoForm = {
       orgCode: this.userInfo.orgCode
     }
-    this.initPermissions();
-    this.getConfigVal("sams_points_type");
-    this.getConfigVal("system_risk_level");
-    this.getDataList();
+    this.initPermissions()
+    this.getConfigVal('sams_points_type')
+    this.getConfigVal('system_risk_level')
+    this.getDataList()
   },
-  activated () {
+  activated() {
     this.getDataList()
     this.setCellColor()
   },
   methods: {
-    initPermissions () {
-      let permissions = getStore({ name: "permissions" });
-      this.riskControlList_del = permissions["riskControlList_del"];
-      this.riskControl_return = permissions["riskControl_return"];
-      this.riskControlList_can = permissions["riskControlList_can"];
-      this.riskControl_relate = permissions["riskControl_relate"];
+    initPermissions() {
+      let permissions = getStore({ name: 'permissions' })
+      this.riskControlList_del = permissions['riskControlList_del']
+      this.riskControl_return = permissions['riskControl_return']
+      this.riskControlList_can = permissions['riskControlList_can']
+      this.riskControl_relate = permissions['riskControl_relate']
     },
     // 获取字典
-    getConfigVal (dicType) {
+    getConfigVal(dicType) {
       // 获取风险等级
       fetchDict(dicType).then((res) => {
         if (res.data.code === 0) {
           // 风险点类型
-          if (dicType === "sams_points_type") {
+          if (dicType === 'sams_points_type') {
             this.riskPointTypeList = res.data.data
           }
 
-          if (dicType === "system_risk_level") {
+          if (dicType === 'system_risk_level') {
             // 风险等级
             this.riskLevelList = res.data.data
           }
         }
-      });
+      })
     },
     //搜索框折叠
-    showInfo () {
+    showInfo() {
       this.showInfoFlag = !this.showInfoFlag
     },
-    setCellColor ({ row, column, rowIndex, columnIndex }) {
+    setCellColor({ row, column, rowIndex, columnIndex }) {
       this.$nextTick(() => {
         if (column.label === i18n.t('index_14')) {
-          const opts = document.getElementsByClassName("optionDiv");
-          let widthArr = [];
+          const opts = document.getElementsByClassName('optionDiv')
+          let widthArr = []
           // 取操作组的最大宽度
           Array.prototype.forEach.call(opts, (item) => {
             if (item.innerText) {
-              widthArr.push(item.offsetWidth);
+              widthArr.push(item.offsetWidth)
             }
-          });
-          column.width = widthArr.length > 0 ? Math.max(...widthArr) + 30 : 60;
+          })
+          column.width = widthArr.length > 0 ? Math.max(...widthArr) + 30 : 60
         }
-      });
+      })
     },
     // 搜索
-    handleSearch () {
-      this.listQuery.current = 1;
-      this.listQuery.size = 20;
-      this.getDataList();
+    handleSearch() {
+      this.listQuery.current = 1
+      this.listQuery.size = 20
+      this.getDataList()
     },
-    getOrg (data) {
-      if(data) {
+    getOrg(data) {
+      if (data) {
         this.listQuery.orgCode = data.code
       } else {
         this.listQuery.orgCode = undefined
       }
     },
     // 重置
-    handleReset () {
+    handleReset() {
       this.listQuery = {
         current: 1,
         size: 20,
-        riskPoint: "",
-        riskPointTypeId: "",
-        riskLevelId: "",
-        addressName: "",
-        orgCode: this.userInfo.orgCode,
-      };
+        riskPoint: '',
+        riskPointTypeId: '',
+        riskLevelId: '',
+        addressName: '',
+        orgCode: this.userInfo.orgCode
+      }
       this.echoForm = {
         orgCode: this.userInfo.orgCode
       }
-      this.getDataList();
+      this.getDataList()
     },
     // 获取表格数据
-    getDataList () {
-      this.options.loading = true;
+    getDataList() {
+      this.options.loading = true
       if (process.env.VUE_APP_MAIN_APPLICATION) {
-        this.listQuery.allSubordinateOrg = "0"
+        this.listQuery.allSubordinateOrg = '0'
       } else {
-        this.listQuery.allSubordinateOrg = "1"
+        this.listQuery.allSubordinateOrg = '1'
       }
       fetchList(this.listQuery)
         .then((res) => {
-          const { code, data } = res.data;
+          const { code, data } = res.data
           if (code === 0) {
-            this.list = data.records;
-            this.total = parseInt(data.total);
+            this.list = data.records
+            this.total = parseInt(data.total)
           }
         })
         .finally(() => {
-          this.options.loading = false;
+          this.options.loading = false
         })
         .catch((err) => {
-          console.log("err", err);
-        });
+          console.log('err', err)
+        })
     },
-    handleRiskLevelClass (val) {
-      console.log(val, '1234');
+    handleRiskLevelClass(val) {
+      console.log(val, '1234')
 
       switch (val) {
         case 1:
-          return "red-color";
+          return 'red-color'
         case 2:
-          return "orange-color";
+          return 'orange-color'
         case 3:
-          return "yellow-color";
+          return 'yellow-color'
         case 4:
-          return "blue-color";
+          return 'blue-color'
         default:
-          return "";
+          return ''
       }
     },
     // 切换每页显示的数量
-    handleSizeChange (pagination) {
-      this.listQuery.current = 1;
-      this.listQuery.size = pagination;
-      this.getDataList();
+    handleSizeChange(pagination) {
+      this.listQuery.current = 1
+      this.listQuery.size = pagination
+      this.getDataList()
     },
     // 切换页码
-    handleIndexChange (pagination) {
-      this.listQuery.current = pagination;
-      this.getDataList();
+    handleIndexChange(pagination) {
+      this.listQuery.current = pagination
+      this.getDataList()
     },
     // 修订
-    handleEdit (row) {
-      console.log(row);
-      if (!row.riskLevelId) return this.$confirm(i18n.t('index_15'), i18n.t('index_16'), {
-        confirmButtonText: i18n.t('index_17'),
-        showCancelButton: false,
-        type: 'warning'
-      }).then(() => {
-      }).catch(() => {
-      });
+    handleEdit(row) {
+      console.log(row)
+      if (!row.riskLevelId)
+        return this.$confirm(i18n.t('index_15'), i18n.t('index_16'), {
+          confirmButtonText: i18n.t('index_17'),
+          showCancelButton: false,
+          type: 'warning'
+        })
+          .then(() => {})
+          .catch(() => {})
       this.$confirm(i18n.t('index_18'), i18n.t('index_16'), {
         confirmButtonText: i18n.t('index_17'),
         cancelButtonText: i18n.t('index_11'),
-        type: "warning",
+        type: 'warning',
         beforeClose: (action, instance, done) => {
-          if (action === "confirm") {
-            instance.confirmButtonLoading = true;
-            instance.confirmButtonText = i18n.t('index_19');
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = i18n.t('index_19')
             fetchFallback(row.riskPointId)
               .then(() => {
                 this.$router.push({
                   name: 'riskPointList'
                 })
-                this.getDataList();
-                done();
-                instance.confirmButtonLoading = false;
+                this.getDataList()
+                done()
+                instance.confirmButtonLoading = false
               })
               .catch((err) => {
-                instance.confirmButtonLoading = false;
-                instance.confirmButtonText = i18n.t('index_17');
-              });
+                instance.confirmButtonLoading = false
+                instance.confirmButtonText = i18n.t('index_17')
+              })
           } else {
-            done();
+            done()
           }
-        },
+        }
       }).then(() => {
         // this.$notify({
         //   title: "成功",
@@ -632,94 +640,87 @@ export default {
         //   type: "success",
         //   duration: 2000,
         // });
-      });
+      })
     },
 
     // 详情
-    handleDetail (row, type) {
-      console.log('row', row);
+    handleDetail(row, type) {
+      console.log('row', row)
       // row.riskLevel = this.handleRiskLevel(row.riskLevelId);
-      this.isShowDetailDialog = true;
+      this.isShowDetailDialog = true
       this.$nextTick(() => {
         this.$refs.detailDialogRefs.openDialog(row, type)
       })
     },
     // 取消
-    handleCancel (row) {
-      this.$confirm(
-        i18n.t('index_20'),
-        i18n.t('index_21'),
-        {
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: i18n.t('index_17'),
-          cancelButtonText: i18n.t('index_11'),
-          type: "warning",
-          beforeClose: (action, instance, done) => {
-            if (action === "confirm") {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = i18n.t('index_19');
-              cancelRiskListById(row.id)
-                .then(() => {
-                  this.getDataList();
-                  done();
-                  instance.confirmButtonLoading = false;
-                })
-                .catch((err) => {
-                  instance.confirmButtonLoading = false;
-                  instance.confirmButtonText = i18n.t('index_17');
-                });
-            } else {
-              done();
-            }
-          },
+    handleCancel(row) {
+      this.$confirm(i18n.t('index_20'), i18n.t('index_21'), {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: i18n.t('index_17'),
+        cancelButtonText: i18n.t('index_11'),
+        type: 'warning',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = i18n.t('index_19')
+            cancelRiskListById(row.id)
+              .then(() => {
+                this.getDataList()
+                done()
+                instance.confirmButtonLoading = false
+              })
+              .catch((err) => {
+                instance.confirmButtonLoading = false
+                instance.confirmButtonText = i18n.t('index_17')
+              })
+          } else {
+            done()
+          }
         }
-      ).then(() => {
+      }).then(() => {
         this.$notify({
           title: i18n.t('index_22'),
           message: i18n.t('index_23'),
-          type: "success",
-          duration: 2000,
-        });
-      });
+          type: 'success',
+          duration: 2000
+        })
+      })
     },
     // 删除
-    handleDelete (row) {
-      this.$confirm(
-        i18n.t('index_24'), i18n.t('index_16'),
-        {
-          confirmButtonText: i18n.t('index_17'),
-          cancelButtonText: i18n.t('index_11'),
-          type: "warning",
-          beforeClose: (action, instance, done) => {
-            if (action === "confirm") {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = i18n.t('index_19');
-              deleteRiskListById(row.id)
-                .then(() => {
-                  this.getDataList();
-                  done();
-                  instance.confirmButtonLoading = false;
-                })
-                .catch((err) => {
-                  instance.confirmButtonLoading = false;
-                  instance.confirmButtonText = i18n.t('index_17');
-                });
-            } else {
-              done();
-            }
-          },
+    handleDelete(row) {
+      this.$confirm(i18n.t('index_24'), i18n.t('index_16'), {
+        confirmButtonText: i18n.t('index_17'),
+        cancelButtonText: i18n.t('index_11'),
+        type: 'warning',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = i18n.t('index_19')
+            deleteRiskListById(row.id)
+              .then(() => {
+                this.getDataList()
+                done()
+                instance.confirmButtonLoading = false
+              })
+              .catch((err) => {
+                instance.confirmButtonLoading = false
+                instance.confirmButtonText = i18n.t('index_17')
+              })
+          } else {
+            done()
+          }
         }
-      ).then(() => {
+      }).then(() => {
         this.$notify({
           title: i18n.t('index_22'),
           message: i18n.t('index_23'),
-          type: "success",
-          duration: 2000,
-        });
-      });
-    },
-  },
-};
+          type: 'success',
+          duration: 2000
+        })
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
